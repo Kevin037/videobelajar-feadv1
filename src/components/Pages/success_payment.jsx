@@ -38,7 +38,7 @@ const SuccessPaymentPage = () => {
                 {paymentMethod.number != "" &&             
                 <div className="justify-center">
                     <p className="text-sm text-gray-400">Silakan cek email kamu untuk informasi lebih lanjut. Hubungi kami jika ada kendala.</p>
-                    <ButtonPrimaryMD url="/transactions" varian="mt-4">Lihat Detail Pesanan</ButtonPrimaryMD>
+                    <ButtonPrimaryMD url="/orders" varian="mt-4">Lihat Detail Pesanan</ButtonPrimaryMD>
                 </div>}
             </Card>
         </div>

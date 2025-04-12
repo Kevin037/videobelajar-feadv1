@@ -123,6 +123,25 @@ const tabs = [
     }
 ];
 
+const order_statuses = [
+    {
+        key:"all",
+        name:"Semua Pesanan"
+    },
+    {
+        key:"pending",
+        name:"Menunggu"
+    }, 
+    {
+        key:"success",
+        name:"Berhasil"
+    }, 
+    {
+        key:"cancelled",
+        name:"Gagal"
+    }
+];
+
 const courseSections = [
     {
       title: "Introduction to Course 1: Foundations of User Experience Design",
@@ -192,6 +211,49 @@ const paymentMethods = {
     ]
 };
 
+const sidebarMenus = [
+    {
+        name:"Profil Saya",
+        url:"/profile",
+        icon:"../assets/profile.svg"
+    },
+    {
+        name:"Kelas Saya",
+        url:"/classes",
+        icon:"../assets/class.svg"
+    }, 
+    {
+        name:"Pesanan Saya",
+        url:"/orders",
+        icon:"../assets/orders.svg"
+    },
+];
+
+const orders = [
+    {
+        id:1,
+        no:"HEL/VI/10062023",
+        paid_at:"2025-04-10 20:00:00",
+        status:"success",
+        class_id:1,
+        price:300000,
+        title:"Big 4 Auditor Financial Analyst",
+        img:"../assets/item1.svg",
+        payment_method:"bca"
+    },
+    {
+        id:2,
+        no:"HEL/VI/10062023",
+        paid_at:"2025-04-10 20:00:00",
+        status:"cancelled",
+        class_id:1,
+        price:400000,
+        title:"Big 4 Auditor Financial Analyst",
+        img:"../assets/item2.svg",
+        payment_method:"bca"
+    }
+];
+
 const howToPay = {
     "Transfer Bank": "Bayar dengan transfer bank",
     "E-Wallet": "Bayar dengan e-wallet",
@@ -259,4 +321,29 @@ export const getTransaction = () => {
 
 export const getHowToPay = () => {
     return howToPay;
+}
+
+export const getOrderStatuses = () => {
+    return order_statuses;
+}
+
+export const getSidebarMenus = () => {
+    return sidebarMenus;
+}
+
+export const getOrders = (params="all") => {    
+    if(params !== "all"){
+        return orders.filter(item => item.status === params);
+        
+    } else {
+        return orders;
+    }
+}
+
+export const getOrder = (id) => {
+    return orders.filter(item => item.id === id);
+}
+
+export const number_format = (number) => {
+    return new Intl.NumberFormat('id-ID').format(number);
 }

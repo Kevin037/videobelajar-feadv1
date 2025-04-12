@@ -29,3 +29,29 @@ export const InputButton = forwardRef((props,ref) => {
         </div>
     )
 })
+
+export const FloatingInput = ({ label, value, onChange, name, className = '' }) => {
+    return (
+      <div className={`relative border rounded-lg px-4 pt-3 pb-1 ${className}`}>
+        <label className="absolute -top-2 left-3 bg-white px-1 text-xs text-green-500 font-medium">
+          {label}
+        </label>
+        <input
+          type="text"
+          name={name}
+          value={value}
+          onChange={onChange}
+          className="w-full outline-none text-sm text-gray-800 bg-transparent"
+        />
+      </div>
+    );
+  };
+
+  export const Select = (props) => {
+    const {children, className} = props
+    return (
+        <select className={`text-sm border rounded-theme w-full py-2 px-3 ${className}`}>
+            {children}
+        </select>
+    )
+  } 

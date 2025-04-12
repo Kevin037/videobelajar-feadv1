@@ -20,6 +20,7 @@ useEffect(() => {
     }
     setItems(getItem(activeTab));
     setTabs(getTabs());
+    localStorage.removeItem("transactions");
 }, []);
 
 useEffect(() => {

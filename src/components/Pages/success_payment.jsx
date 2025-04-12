@@ -1,16 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Authlayout from "../Layouts/AuthLayout";
 import { ButtonPrimaryMD } from "../Elements/button";
 import { Card } from "../Elements/card";
 import { H2 } from "../Elements/heading";
-import { getPaymentMethods } from "../../data";
 
 const token = localStorage.getItem("token");
 const data = JSON.parse(localStorage.getItem("transactions"));
 const SuccessPaymentPage = () => {
-    const [transaction, setTransaction] = useState("");
-    const [paymentMethod, setPaymentMethod] = useState("");
-
     useEffect(() => {
         if(token === null) {
             window.location.href = "/login";
@@ -19,12 +15,7 @@ const SuccessPaymentPage = () => {
         if (!data) {
             window.location.href = "/checkout";
         }
-        setTransaction(data);
     },[]);
-
-    useEffect(() => {
-        setPaymentMethod(getPaymentMethods(transaction.metode));
-    }, [transaction]);
 
  return (
     <Authlayout title="Home" navType="home" withFooter={false} customHead={<img src="../assets/process_completed.svg" className="w-100" />}>
@@ -34,12 +25,11 @@ const SuccessPaymentPage = () => {
             </div>
             <Card varian="mb-4 p-10 text-center hover:opacity-100">
                 <img className="object-cover w-100 h-auto h-auto mx-auto" src="../assets/success_payment.svg" alt="" />
-                <H2 varian="mt-4 text-center">Pembayaran Berhasil!</H2>
-                {paymentMethod.number != "" &&             
+                <H2 varian="mt-4 text-center">Pembayaran Berhasil!</H2>         
                 <div className="justify-center">
                     <p className="text-sm text-gray-400">Silakan cek email kamu untuk informasi lebih lanjut. Hubungi kami jika ada kendala.</p>
                     <ButtonPrimaryMD url="/orders" varian="mt-4">Lihat Detail Pesanan</ButtonPrimaryMD>
-                </div>}
+                </div>
             </Card>
         </div>
     </Authlayout>

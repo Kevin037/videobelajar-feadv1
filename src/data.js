@@ -215,17 +215,20 @@ const sidebarMenus = [
     {
         name:"Profil Saya",
         url:"/profile",
-        icon:"../assets/profile.svg"
+        icon:"../assets/profile.svg",
+        activeIcon:"../assets/profile_active.svg"
     },
     {
         name:"Kelas Saya",
         url:"/classes",
-        icon:"../assets/class.svg"
+        icon:"../assets/class.svg",
+        activeIcon:"../assets/class_active.svg"
     }, 
     {
         name:"Pesanan Saya",
         url:"/orders",
-        icon:"../assets/orders.svg"
+        icon:"../assets/orders.svg",
+        activeIcon:"../assets/orders_active.svg"
     },
 ];
 

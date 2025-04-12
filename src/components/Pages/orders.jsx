@@ -6,14 +6,13 @@ import { H2 } from "../Elements/heading";
 import { Link } from "react-router-dom";
 import { OrderCard } from "../Fragments/OrderCard";
 import { Pagination } from "../Fragments/Pagination";
+import { SidebarMenu } from "../Fragments/SidebarMenu";
 
 const token = localStorage.getItem("token");
 const OrderPage = () => {
 
     const [activeTab, setActiveTab] = useState("all");
     const [orderStatus, setOrderStatus] = useState([]);
-    const [sidebarMenus, setSidebarMenus] = useState([]);
-    const [sidebarMenuActive, setSidebarMenuActive] = useState("/orders");
     const [orders,setOrders] = useState([]);
 
     useEffect(() => {
@@ -21,7 +20,6 @@ const OrderPage = () => {
             window.location.href = "/login";
         }
         setOrderStatus(getOrderStatuses());
-        setSidebarMenus(getSidebarMenus());
         setOrders(getOrders());
     }, []);
 
@@ -39,24 +37,7 @@ const OrderPage = () => {
                 <div className="col-span-3 ...">
                     <H2>Daftar Pesanan</H2>
                     <p className="text-sm text-gray-400">Informasi terperinci mengenai pembelian</p>
-                    <Card varian="md:mr-4">
-                        {sidebarMenus.length > 0 && sidebarMenus.map((menu) => (
-                            <Link to={menu.url} key={menu.url}>
-                                <div 
-                                    className={`grid grid-cols-12 ... mt-2 p-2 ${
-                                        sidebarMenuActive === menu.url
-                                            ? "text-orange-400 bg-orange-50 border-orange-400 border rounded-sm"
-                                            : ""
-                                    }`} 
-                                    key={menu.id} onClick={() => setSidebarMenuActive(menu.id)}>
-                                    <div className="col-span-2 md:col-span-3 ... mx-3">
-                                        <img className="object-cover" src={menu.icon} alt="" />
-                                    </div>
-                                    <div className="col-span-10 md:col-span-9 ...">{menu.name}</div>
-                                </div>
-                            </Link>
-                        ))}
-                    </Card>
+                    <SidebarMenu activeMenu="/orders" />
                 </div>
                 <div className="col-span-9 ... mx-2 sm:mx-0">
                     <Card>

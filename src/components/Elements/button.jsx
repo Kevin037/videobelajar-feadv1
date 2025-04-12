@@ -25,6 +25,18 @@ export const ButtonTheme = (props) => {
   );
 }
 
+export const ButtonMd = (props) => {
+  const {url, children, varian} = props
+  return (
+    <Link 
+      className={`bg-green-500 mt-4 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition cursor-pointer ${varian}`} 
+      to={url}
+      >
+    {children}
+    </Link>
+  );
+}
+
 export const ButtonSubmitTheme = (props) => {
   const {type, children, varian, onClick} = props
   return (
@@ -58,6 +70,17 @@ export const ButtonPrimary = (props) => {
       varian={`bg-green-500 hover:bg-green-600 text-white ${varian}`}>
     {children}
     </ButtonTheme>
+  );
+}
+
+export const ButtonPrimaryMD = (props) => {
+  const {url, children, varian} = props
+  return (
+    <Link 
+      to={url}
+      className={`${varian} block md:inline-block bg-green-500 mt-4 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition cursor-pointer`}>
+    {children}
+    </Link>
   );
 }
 

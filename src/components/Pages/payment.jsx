@@ -52,7 +52,7 @@ const PaymentPage = () => {
                         <TransactionNominal /><br />
                         <div className="grid grid-cols-1 md:grid-cols-2  ... gap-2 mt-2">
                             <div className="col-span-1 my-1"><ButtonWhite url="/change_payment">Ganti Metode Pembayaran</ButtonWhite></div>
-                            <div className="col-span-1 my-1"><ButtonPrimary url="#">Bayar Sekarang</ButtonPrimary></div>
+                            <div className="col-span-1 my-1"><ButtonPrimary url="/success_payment">Bayar Sekarang</ButtonPrimary></div>
                         </div>
                     </Card>
                     <Card varian="md:mr-4">

@@ -1,49 +1,45 @@
 import { useEffect, useState } from "react";
 import Authlayout from "../Layouts/AuthLayout";
-import { getOrders, getOrderStatuses, getSidebarMenus } from "../../data";
+import { getClassGroups, getClassses, getOrders, getOrderStatuses, getSidebarMenus } from "../../data";
 import { Card } from "../Elements/card";
 import { H2 } from "../Elements/heading";
 import { Link } from "react-router-dom";
-import { OrderCard } from "../Fragments/SegmentCard";
 import { Pagination } from "../Fragments/Pagination";
 import { SidebarMenu } from "../Fragments/SidebarMenu";
+import { ClassCard } from "../Fragments/SegmentCard";
 
 const token = localStorage.getItem("token");
-const OrderPage = () => {
+const ClassPage = () => {
 
     const [activeTab, setActiveTab] = useState("all");
-    const [orderStatus, setOrderStatus] = useState([]);
-    const [orders,setOrders] = useState([]);
+    const [classGroups, setClassGroups] = useState([]);
+    const [classes,setClasses] = useState([]);
 
     useEffect(() => {
         if(token === null) {
             window.location.href = "/login";
         }
-        setOrderStatus(getOrderStatuses());
-        setOrders(getOrders());
+        setClassGroups(getClassGroups());
+        setClasses(getClassses());
     }, []);
 
     useEffect(() => {
-    }, [orders]);
-
-    useEffect(() => {
-        setOrders(getOrders(activeTab));
+        setClasses(getClassses(activeTab));
     }, [activeTab]);
-
  return (
     <Authlayout title="Home" navType="home" withFooter={true}>
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-12 ...">
                 <div className="col-span-3 ...">
-                    <H2>Daftar Pesanan</H2>
+                    <H2>Daftar Kelas</H2>
                     <p className="text-sm text-gray-400">Informasi terperinci mengenai pembelian</p>
-                    <SidebarMenu activeMenu="/orders" />
+                    <SidebarMenu activeMenu="/classes" />
                 </div>
                 <div className="col-span-9 ... mx-2 sm:mx-0">
                     <Card>
                         <div className="overflow-x-auto mx-4">
                             <div className="flex space-x-6 whitespace-nowrap border-gray-200 mt-4 mx-4">
-                            {orderStatus.length > 0 && orderStatus.map((tab) => (
+                            {classGroups.length > 0 && classGroups.map((tab) => (
                             <button
                                 key={tab.key}
                                 onClick={() => setActiveTab(tab.key)}
@@ -58,10 +54,10 @@ const OrderPage = () => {
                             ))}
                             </div>
                         </div>
-                        {orders.length > 0 && orders.map((order) => (
-                            <OrderCard order={order} key={order.id} />
+                        {classes.length > 0 && classes.map((order) => (
+                            <ClassCard order={order} key={order.id} />
                         ))}
-                        {orders.length > 0 && (
+                        {classes.length > 0 && (
                             <Pagination />
                         )}
                     </Card>
@@ -72,4 +68,4 @@ const OrderPage = () => {
  );
 }
 
-export default OrderPage
+export default ClassPage

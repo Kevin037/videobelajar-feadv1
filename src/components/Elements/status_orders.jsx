@@ -6,18 +6,20 @@ export const FailStatus = () => {
     )
 }
 
-export const SuccessStatus = () => {
+export const SuccessStatus = (props) => {
+    const {label="Berhasil"} = props
     return (
         <span className="bg-green-100 text-green-500 text-sm px-3 py-1 rounded-lg">
-        Berhasil
+        {label}
         </span>
     )
 }
 
-export const PendingStatus = () => {
+export const PendingStatus = (props) => {
+    const {label="Belum Bayar"} = props
     return (
         <span className="bg-yellow-100 text-yellow-500 text-sm px-3 py-1 rounded-lg">
-        Belum Bayar
+        {label}
         </span>
     )
 }
@@ -29,6 +31,16 @@ export const StatusDisplay = (props) => {
             {status === "pending" && (<PendingStatus />)}
             {status == "cancelled" && (<FailStatus />)}
             {status == "success" && (<SuccessStatus />)}
+        </>
+    )
+}
+
+export const ClassStatusDisplay = (props) => {
+    const {status} = props;
+    return (
+        <>
+            {status == "in_progress" && (<PendingStatus label="Sedang Berjalan" />)}
+            {status == "completed" && (<SuccessStatus label="Selesai" />)}
         </>
     )
 }

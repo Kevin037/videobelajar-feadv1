@@ -263,6 +263,71 @@ const howToPay = {
     "Kartu Kredit/Debit": "Bayar dengan kartu kredit/debit",
 };
 
+const classGroups = [
+    {
+        key:"all",
+        name:"Semua Kelas"
+    },    {
+        key:"in_progress",
+        name:"Sedang Berjalan"
+    },
+    {
+        key:"completed",
+        name:"Selesai"
+    }
+];
+
+const myClasses = [
+    {
+        id: 1,
+        title: "Big 4 Auditor Financial Analyst",
+        desc: "Mulai transformasi dengan instruktur profesional, harga yang terjangkau, dan  kurikulum terbaik",
+        photo: "../assets/item1.svg",
+        avatar: "../assets/avatar1.svg",
+        user: "Jenna Ortega",
+        user_position: "Senior Accountant",
+        user_company: "Gojek",
+        type: "marketing",
+        status: "in_progress",
+        modul_progress: "12 / 12",
+        total_modul: 12,
+        total_time: 20,
+        percentage_progress:100
+    },
+    {
+        id: 2,
+        title: "Big 4 Auditor Financial Analyst",
+        desc: "Mulai transformasi dengan instruktur profesional, harga yang terjangkau, dan  kurikulum terbaik",
+        photo: "../assets/item2.svg",
+        avatar: "../assets/avatar2.svg",
+        user: "Jenna Ortega",
+        user_position: "Senior Accountant",
+        user_company: "Gojek",
+        type: "design",
+        status: "completed",
+        modul_progress: "12 / 12",
+        total_modul: 12,
+        total_time: 20,
+        percentage_progress:100
+    },
+    {
+        id: 3,
+        title: "Big 4 Auditor Financial Analyst",
+        desc: "Mulai transformasi dengan instruktur profesional, harga yang terjangkau, dan  kurikulum terbaik",
+        photo: "../assets/item3.svg",
+        avatar: "../assets/avatar3.svg",
+        user: "Jenna Ortega",
+        user_position: "Senior Accountant",
+        user_company: "Gojek",
+        type: "marketing",
+        status: "in_progress",
+        modul_progress: "12 / 12",
+        total_modul: 12,
+        total_time: 20,
+        percentage_progress:100
+    }
+];
+
 export const getItem = (params) => {
     if(params !== "all"){
         return items.filter(item => item.type === params);
@@ -349,4 +414,17 @@ export const getOrder = (id) => {
 
 export const number_format = (number) => {
     return new Intl.NumberFormat('id-ID').format(number);
+}
+
+export const getClassGroups = () => {
+    return classGroups;
+}
+
+export const getClassses = (params="all") => {
+    if(params !== "all"){
+        return myClasses.filter(item => item.status === params);
+        
+    } else {
+        return myClasses;
+    }
 }

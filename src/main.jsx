@@ -12,6 +12,7 @@ import ChangePaymentPage from './components/Pages/change_payment.jsx'
 import SuccessPaymentPage from './components/Pages/success_payment.jsx'
 import OrderPage from './components/Pages/orders.jsx'
 import ProfilePage from './components/Pages/profile.jsx'
+import ClassPage from './components/Pages/classes.jsx'
 
 const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
   {
     path: '/profile',
     element: <ProfilePage/>
+  },
+  {
+    path: '/classes',
+    element: <ClassPage/>
   }
 ])
 

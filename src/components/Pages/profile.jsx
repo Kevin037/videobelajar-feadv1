@@ -3,11 +3,8 @@ import Authlayout from "../Layouts/AuthLayout";
 import { getOrders, getOrderStatuses } from "../../data";
 import { Card } from "../Elements/card";
 import { H2 } from "../Elements/heading";
-import { Link } from "react-router-dom";
-import { OrderCard } from "../Fragments/OrderCard";
-import { Pagination } from "../Fragments/Pagination";
 import { SidebarMenu } from "../Fragments/SidebarMenu";
-import { Button, ButtonMd, ButtonPrimaryMD } from "../Elements/button";
+import { ButtonPrimaryMD } from "../Elements/button";
 import { FloatingInput, Select } from "../Elements/input";
 
 const token = localStorage.getItem("token");

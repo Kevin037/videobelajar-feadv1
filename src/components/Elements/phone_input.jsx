@@ -7,7 +7,7 @@ const countries = [
   ];
 
 const PhoneInputForm = forwardRef((props, ref) => {
-    const {name,type,placeholder,label} = props
+    const {name,type,placeholder,label,onChange} = props
     const [selectedCountry, setSelectedCountry] = useState(countries[0]);
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     return (
@@ -42,7 +42,7 @@ const PhoneInputForm = forwardRef((props, ref) => {
                         </ul>
                         )}
                     </div>
-                    <Input name={name} type={type} placeholder={placeholder} ref={ref}></Input>
+                    <Input name={name} type={type} placeholder={placeholder} ref={ref} onChange={onChange}></Input>
                 </div>
         </div>
     )   

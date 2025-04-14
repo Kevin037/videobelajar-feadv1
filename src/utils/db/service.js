@@ -1,5 +1,5 @@
-import {collection, getDocs, getFirestore, query, where} from "firebase/firestore";
-import app from "./init";
+// import {collection, getDocs, getFirestore, query, where} from "firebase/firestore";
+// import app from "./init";
 import api from "../api";
 
 // const firestore = getFirestore(app);
@@ -49,3 +49,23 @@ export async function retrieveData(collectionName, filterGroup = null) {
 
   return formatted;
 }
+
+function buildFirestoreFields(data) {
+    const fields = {};
+    Object.entries(data).forEach(([key, value]) => {
+      // Asumsikan semua value bertipe string untuk registrasi sederhana
+      fields[key] = { stringValue: value };
+    });
+    return fields;
+  }
+  
+  export async function registerUser(userData) {
+    const endpoint = `/projects/${PROJECT_ID}/databases/(default)/documents/users`;
+    
+    const body = {
+      fields: buildFirestoreFields(userData),
+    };
+  
+    const response = await api.post(endpoint, body);
+    return response.data;
+  }

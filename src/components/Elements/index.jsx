@@ -4,7 +4,7 @@ import { Input } from "./input";
 
 const InputForm = forwardRef((props, ref) => {
     const [showPassword, setShowPassword] = useState(false);
-    const {name,type,placeholder,label} = props
+    const {name,type,placeholder,label, onChange} = props
     const [typeValue,setTypeValue] = useState(type);
     useEffect(() => {
         if (name == "password") {
@@ -19,7 +19,7 @@ const InputForm = forwardRef((props, ref) => {
     return (
         <div className="mb-6 relative">
         <Label>{label}</Label>
-        <Input name={name} type={typeValue} placeholder={placeholder} ref={ref}></Input>
+        <Input name={name} type={typeValue} placeholder={placeholder} ref={ref} onChange={onChange}></Input>
         {type == "password" && <span className="absolute right-3 top-9 cursor-pointer text-gray-500" 
             onClick={() => setShowPassword((prev) => !prev)}>
             {showPassword ? 

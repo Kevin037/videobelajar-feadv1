@@ -1,7 +1,7 @@
 import { forwardRef } from "react"
 
 export const Input = forwardRef((props,ref) => {
-    const {name,type,placeholder,varian} = props
+    const {name,type,placeholder,varian,onChange} = props
     return (
         <input 
             type={type}
@@ -10,6 +10,7 @@ export const Input = forwardRef((props,ref) => {
             id={name}
             placeholder={placeholder}
             ref={ref}
+            onChange={onChange}
         />
     )
 });

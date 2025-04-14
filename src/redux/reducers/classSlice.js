@@ -7,14 +7,26 @@ const initialState = {
   error: null,
 };
 
-export const getClasses = createAsyncThunk('users/fetch', async (filterGroup, thunkAPI) => {
-  try {
-    const data = await retrieveData('classes', filterGroup);
-    return data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.message);
+// export const getClasses = createAsyncThunk('users/fetch', async (filterGroup, thunkAPI) => {
+//   try {
+//     const data = await retrieveData('classes', filterGroup);
+//     return data;
+//   } catch (error) {
+//     return thunkAPI.rejectWithValue(error.message);
+//   }
+// });
+
+export const getClasses = createAsyncThunk(
+  'class/fetch',
+  async (type, thunkAPI) => {
+    try {
+      const data = await retrieveData('classes', type);
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
   }
-});
+);
 
 const classSlice = createSlice({
   name: 'class',

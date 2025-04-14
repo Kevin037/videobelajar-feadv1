@@ -2,22 +2,39 @@ import InputForm from "../Elements";
 import { ButtonPrimarySubmit, ButtonSecondary, ButtonSpan } from "../Elements/button";
 import { Card } from "../Elements/card";
 import { HeadAuth } from "./Content";
-import { useEffect } from "react";
-import { getToken } from "../../data";
+import { useEffect, useState } from "react";
+import useAuth from "../../hooks/useAuth";
 
-const token = localStorage.getItem("token");
 const Formlogin = () => {
-    const HandleLogin = (event) => {
-        event.preventDefault();
-        localStorage.setItem("token",getToken());
-        window.location.href = "/";
-    };
+    const token = localStorage.getItem("token");
+        const [email, setEmail]     = useState('');
+        const [password, setPassword] = useState('');
+        
+        const { user, loading, error, login } = useAuth();
+      
+        const HandleLogin = (e) => {
+          e.preventDefault();
+          login({ email, password });
+        };
+    
+        useEffect(() => {
+            console.log(user);
+            
+            if (user) {
+                window.location.href = "/login";   
+            }
+        },[user])
+    // const HandleLogin = (event) => {
+    //     event.preventDefault();
+    //     localStorage.setItem("token",getToken());
+    //     window.location.href = "/";
+    // };
 
     useEffect(() => {
         if(token !== null) {
             window.location.href = "/";
         }
-    },[])
+    },[token])
 
     return (
         <div className="space p-10 overflow-sm-hidden">
@@ -27,12 +44,12 @@ const Formlogin = () => {
                     desc="Yuk, lanjutin belajarmu di videobelajar."
                 />
                 <form onSubmit={HandleLogin}>
-                    <InputForm label="Email" type="text" placeholder="email@gmail.com" name="email" />
-                    <InputForm label="Password" type="password" placeholder="***" name="password" />
+                    <InputForm label="Email" type="text" placeholder="email@gmail.com" name="email" onChange={e => setEmail(e.target.value)} />
+                    <InputForm label="Password" type="password" placeholder="***" name="password" onChange={e => setPassword(e.target.value)} />
                     <div className="mb-4 text-right">
                         <a className="text-sm">Lupa Password ?</a>
                     </div>
-                    <ButtonPrimarySubmit type="submit">Masuk</ButtonPrimarySubmit>
+                    <ButtonPrimarySubmit type="submit">{loading ? "Memuat..." : "Masuk"}</ButtonPrimarySubmit>
                     <ButtonSecondary url="/register" varian="mt-2">Daftar</ButtonSecondary>
                     <div className="separator mt-4 mb-4">atau</div>
                     <ButtonSpan type="submit" varian="hover:bg-gray-50">

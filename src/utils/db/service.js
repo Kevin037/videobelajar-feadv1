@@ -69,3 +69,53 @@ function buildFirestoreFields(data) {
     const response = await api.post(endpoint, body);
     return response.data;
   }
+ 
+  export async function loginUser({ email, password }) {
+    const endpoint = `/projects/${PROJECT_ID}/databases/(default)/documents:runQuery`;
+  
+    const body = {
+      structuredQuery: {
+        from: [{ collectionId: "users" }],
+        where: {
+          compositeFilter: {
+            op: "AND",
+            filters: [
+              {
+                fieldFilter: {
+                  field: { fieldPath: "email" },
+                  op: "EQUAL",
+                  value: { stringValue: email }
+                }
+              },
+              {
+                fieldFilter: {
+                  field: { fieldPath: "password" },
+                  op: "EQUAL",
+                  value: { stringValue: password }
+                }
+              }
+            ]
+          }
+        },
+        limit: 1
+      }
+    };
+  
+    const response = await api.post(endpoint, body);
+    const document = response.data.find((item) => item.document);
+  
+    if (!document) {
+      throw new Error("Email atau password salah");
+    }
+  
+    // Ambil data user
+    const userData = document.document.fields;
+    const id = document.document.name.split('/').pop();
+  
+    return {
+      id,
+      ...Object.fromEntries(
+        Object.entries(userData).map(([key, val]) => [key, val.stringValue])
+      )
+    };
+  }

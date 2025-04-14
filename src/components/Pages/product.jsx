@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import Authlayout from "../Layouts/AuthLayout";
-import { getCourseSections, getFacilities, getItem } from "../../data";
+import { getCourseSections, getItem } from "../../data";
 import CardItems from "../Fragments/CardItems";
 import { BannerContent } from "../Fragments/Content";
-import { ButtonPrimary } from "../Elements/button";
 import { Card } from "../Elements/card";
-import { H1, H2 } from "../Elements/heading";
+import { H1 } from "../Elements/heading";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { ItemSpesification } from "../Fragments/ItemSpesification";
+import { useParams } from "react-router-dom";
 
 const token = localStorage.getItem("token");
 const ProductPage = () => {
-
-const [items,setItems] = useState([]);
-const [courseSections,setCourseSections] = useState([]);
+    const {id} = useParams();
+    const [items,setItems] = useState([]);
+    const [courseSections,setCourseSections] = useState([]);
 
 useEffect(() => {
     if(token === null) {

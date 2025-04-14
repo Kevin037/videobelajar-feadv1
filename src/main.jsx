@@ -13,6 +13,8 @@ import SuccessPaymentPage from './components/Pages/success_payment.jsx'
 import OrderPage from './components/Pages/orders.jsx'
 import ProfilePage from './components/Pages/profile.jsx'
 import ClassPage from './components/Pages/classes.jsx'
+import { store } from './redux/store.js'
+import { Provider } from 'react-redux';
 
 const router = createBrowserRouter([
   {
@@ -28,7 +30,7 @@ const router = createBrowserRouter([
     element: <HomePage/>
   },
   {
-    path: '/product',
+    path: '/product/:id',
     element: <ProductPage/>
   },
   {
@@ -63,6 +65,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router}/>
+    <Provider store={store}>
+      <RouterProvider router={router}/>
+    </Provider>
   </StrictMode>,
 )

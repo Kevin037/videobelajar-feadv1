@@ -1,31 +1,26 @@
 import { useEffect, useState } from "react";
 import Authlayout from "../Layouts/AuthLayout";
-import { getItem, getTabs } from "../../data";
+import { getTabs } from "../../data";
 import CardItems from "../Fragments/CardItems";
 import { BannerContent } from "../Fragments/Content";
 import { Input, InputButton } from "../Elements/input";
 import { ButtonYellow } from "../Elements/button";
+import useClass from "../../hooks/useClass";
 
 const token = localStorage.getItem("token");
 const HomePage = () => {
 
-const [items,setItems] = useState([]);
-
 const [activeTab, setActiveTab] = useState("all");
 const [tabs, setTabs] = useState([]);
+const { classData } = useClass(activeTab === "all" ? null : activeTab);
 
 useEffect(() => {
     if(token === null) {
         window.location.href = "/login";
     }
-    setItems(getItem(activeTab));
     setTabs(getTabs());
     localStorage.removeItem("transactions");
 }, []);
-
-useEffect(() => {
-    setItems(getItem(activeTab));
-}, [activeTab]);
 
  return (
     <Authlayout title="Home" navType="home" withFooter={true}>
@@ -60,7 +55,7 @@ useEffect(() => {
                 </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 ...">
-                {items.length > 0 && items.map((item) => (
+                {classData.length > 0 && classData.map((item) => (
                     <CardItems 
                         key={item.id} 
                         id={item.id} 
@@ -70,7 +65,8 @@ useEffect(() => {
                         avatar={item.avatar} 
                         user={item.user} 
                         user_position={item.user_position} 
-                        user_company={item.user_company} 
+                        user_company={item.user_company}
+                        rating={item.rating}
                     />
                 ))}
             </div>

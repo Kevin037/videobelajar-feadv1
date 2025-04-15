@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom"
 import { Card } from "../Elements/card"
+import { formatNumberToK } from "../../data"
 
 const CardItems = (props) => {
-    const {id,photo,title,desc,avatar,user,user_position,user_company,rating} = props
+    const {id,photo,title,desc,avatar,user,user_position,user_company,rating,price} = props
     return (
         <Link to={`/product/${id}`}>
         <Card key={id} varian="mx-2 max-w-sm">
@@ -32,7 +33,7 @@ const CardItems = (props) => {
             </div>
             </div>
             <div className="col-span-1 ...">
-                <b><h5 className="price">Rp 300K</h5></b>
+                <b><h5 className="price">Rp {formatNumberToK(price)}</h5></b>
             </div>
         </div>
     </Card>

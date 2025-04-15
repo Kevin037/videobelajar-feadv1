@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { getFacilities } from "../../data";
+import { formatNumberToK, getFacilities } from "../../data";
 import { Card } from "../Elements/card";
 import { H1, H2 } from "../Elements/heading";
 import { ButtonPrimary } from "../Elements/button";
 
 export const ItemSpesification = (props) => {
-    const {isDetail} = props
+    const {isDetail,data} = props
     const [facilities,setFacilities] = useState([]);
     useEffect(() => {
         setFacilities(getFacilities());
@@ -13,12 +13,12 @@ export const ItemSpesification = (props) => {
     return (
         <Card varian="md:mr-4 p-4">
             {isDetail &&
-                <img className="img-item hidden md:block" src="../assets/item1.svg" alt="" />
+                <img className="img-item hidden md:block" src={`../assets/${data.photo}`} alt="" />
             }
-            <H1>Gapai Karier Impianmu sebagai Seorang UI/UX Designer & Product Manager.</H1><br />
+            <H1>{data.page_title}</H1><br />
             <div className="grid grid-cols-12 ...">
-                <div className="col-span-3 ..."><b><h5 className="price">Rp 250K</h5></b></div>
-                <div className="col-span-5 ..."><p className="line-through text-black-400 text-md">Rp 500K</p></div>
+                <div className="col-span-3 ..."><b><h5 className="price">Rp {formatNumberToK(data.new_price)}</h5></b></div>
+                <div className="col-span-5 ..."><p className="line-through text-black-400 text-md">Rp {formatNumberToK(data.price)}</p></div>
                 <div className="col-span-4 ..."><p className="bg-yellow-400 rounded-lg text-gray-100 text-md px-2 py-1">Diskon 50%</p></div>
             </div>
             {!isDetail && 

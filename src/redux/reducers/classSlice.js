@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { retrieveData } from '../../utils/db/service';
+import { getClassById, parseFirestoreFields, retrieveData } from '../../utils/db/service';
 
 const initialState = {
+  selectedClass:null,
   classData: [],
   loading: false,
   error: null,
@@ -22,6 +23,18 @@ export const getClasses = createAsyncThunk(
     try {
       const data = await retrieveData('classes', type);
       return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchClassById = createAsyncThunk(
+  'class/getById',
+  async (id, thunkAPI) => {
+    try {
+      const res = await getClassById(id);
+      return res;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -52,6 +65,17 @@ const classSlice = createSlice({
         state.classData = action.payload;
       })
       .addCase(getClasses.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchClassById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchClassById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.selectedClass = parseFirestoreFields(action.payload.fields);
+      })
+      .addCase(fetchClassById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

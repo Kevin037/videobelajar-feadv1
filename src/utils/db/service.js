@@ -21,6 +21,18 @@ import api from "../api";
 
 const PROJECT_ID = 'videobelajar-react'; // ganti sesuai project kamu
 
+export const parseFirestoreFields = (data) => {
+  const parsed = {};
+
+  Object.keys(data).forEach((key) => {
+    const valueObj = data[key];
+    const value = Object.values(valueObj)[0]; // Ambil isi dari stringValue, integerValue, dll.
+    parsed[key] = value;
+  });
+
+  return parsed;
+};
+
 export async function retrieveData(collectionName, filterGroup = null) {
   const endpoint = `/projects/${PROJECT_ID}/databases/(default)/documents/${collectionName}`;
 
@@ -44,10 +56,21 @@ export async function retrieveData(collectionName, filterGroup = null) {
 
   // filter jika dibutuhkan
   if (filterGroup) {
-    return formatted.filter(item => item.group === filterGroup);
+    if (collectionName === 'classes') {
+      return formatted.filter(item => item.group === filterGroup); 
+    }
+    if (collectionName === 'class_tutors') {
+      return formatted.filter(item => item.class_id === filterGroup); 
+    }
   }
 
   return formatted;
+}
+
+export async function getClassById(id) {
+  const endpoint = `/projects/${PROJECT_ID}/databases/(default)/documents/classes/${id}`;
+  const response = await api.get(endpoint);
+  return response.data;
 }
 
 function buildFirestoreFields(data) {

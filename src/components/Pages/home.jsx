@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import Authlayout from "../Layouts/AuthLayout";
 import { getTabs } from "../../data";
 import CardItems from "../Fragments/CardItems";
@@ -67,6 +67,7 @@ useEffect(() => {
                         user_position={item.user_position} 
                         user_company={item.user_company}
                         rating={item.rating}
+                        price={item.new_price}
                     />
                 ))}
             </div>

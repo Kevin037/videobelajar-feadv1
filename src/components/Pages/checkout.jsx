@@ -7,12 +7,16 @@ import { H1 } from "../Elements/heading";
 import { ItemSpesification } from "../Fragments/ItemSpesification";
 import { CheckCircle, ChevronDown } from "lucide-react";
 import { TransactionNominal } from "../Fragments/TransactionNominal";
+import useClass from "../../hooks/useClass";
+import { useParams } from "react-router-dom";
 
 const token = localStorage.getItem("token");
 const CheckoutPage = () => {
+    const {id} = useParams();
     const [paytmentMethods,setPaytmentMethods] = useState([]);
     const [openGroup, setOpenGroup] = useState("Transfer Bank");
     const [selectedMethod, setSelectedMethod] = useState("");
+    const { selectedClass } = useClass("",id);
 
 useEffect(() => {
     if(token === null) {
@@ -101,7 +105,9 @@ const HandleCheckout = (event) => {
                     </Card>
                 </div>
                 <div className="col-span-1 ... mx-2 sm:mx-0 order-1 lg:order-2">
-                    <ItemSpesification isDetail={true}/>
+                {selectedClass && (
+                    <ItemSpesification isDetail={true} data={selectedClass}/>
+                )}
                 </div>
             </div>
         </div>

@@ -8,12 +8,17 @@ import { H1 } from "../Elements/heading";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { ItemSpesification } from "../Fragments/ItemSpesification";
 import { useParams } from "react-router-dom";
+import useClass from "../../hooks/useClass";
+import useTutor from "../../hooks/useTutor";
 
 const token = localStorage.getItem("token");
 const ProductPage = () => {
     const {id} = useParams();
     const [items,setItems] = useState([]);
     const [courseSections,setCourseSections] = useState([]);
+    const { selectedClass } = useClass("",id);
+    const { limitedClass } = useClass("",id,3);
+    const { tutorData } = useTutor(id);
 
 useEffect(() => {
     if(token === null) {
@@ -29,6 +34,10 @@ const toggle = (index) => {
   setOpenIndex(openIndex === index ? null : index);
 };
 
+useEffect(() => {
+  console.log(tutorData);
+}, [tutorData]);
+
 const strLimit = (str, limit) => {
     if (!str) return "";
     return str.length > limit ? str.substring(0, limit) + "..." : str;
@@ -40,7 +49,7 @@ const strLimit = (str, limit) => {
             <section className="banner-hero banner-space">
                 <div className="banner-content">
                     <BannerContent 
-                        title="Gapai Karier Impianmu sebagai Seorang UI/UX Designer & Product Manager."
+                        title={selectedClass?.page_title}
                         desc="Belajar bersama tutor profesional di Video Course. Kapanpun, di manapun."
                         varian="text-left"
                     >
@@ -51,39 +60,33 @@ const strLimit = (str, limit) => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 ...">
                 <div className="col-span-2 ... order-2 md:order-1">
-                    <Card varian="md:mr-4">
-                        <H1>Deskripsi</H1><br />
-                        <p>Foundations of User Experience (UX) Design adalah yang pertama dari rangkaian tujuh kursus yang akan membekali Anda dengan keterampilan yang dibutuhkan untuk melamar pekerjaan tingkat pemula dalam desain pengalaman pengguna. Desainer UX fokus pada interaksi yang dilakukan orang dengan produk seperti situs web, aplikasi seluler, dan objek fisik. Desainer UX membuat interaksi sehari-hari itu dapat digunakan, menyenangkan, dan dapat diakses. Peran seorang desainer UX tingkat pemula mungkin termasuk berempati dengan pengguna, menentukan poin rasa sakit mereka, memunculkan ide untuk solusi desain, membuat wireframe, prototipe, dan maket, dan menguji desain untuk mendapatkan umpan balik.</p>
-                    </Card>
-                    <Card varian="md:mr-4 mt-4 py-6">
-                        <H1>Belajar bersama Tutor Profesional</H1><br />
-                        <div className="grid grid-cols-1 md:grid-cols-2 ...">
-                            <div className="col-span-1 ...">
-                                <Card varian="md:mr-4">
-                                    <div className="grid grid-cols-12 ...">
-                                        <div className="col-span-2 ... "><img src="../assets/avatar5.svg" alt="" /></div>
-                                        <div className="col-span-10 ...">
-                                            <p className="text-sm mx-2 font-medium">Gregorius Edrik Lawanto</p>
-                                            <p className="text-xs mx-2">Senior Talent Acquisition di <span className="font-medium">WingsGroup</span></p>
-                                        </div>
+                    {selectedClass?.long_desc && (
+                        <Card varian="md:mr-4">
+                            <H1>Deskripsi</H1><br />
+                            <p>{selectedClass.long_desc}</p>
+                        </Card>  
+                    )}
+                    {tutorData.length > 0 && (
+                        <Card varian="md:mr-4 mt-4 py-6">
+                            <H1>Belajar bersama Tutor Profesional</H1><br />
+                            <div className="grid grid-cols-1 md:grid-cols-2 ...">
+                                {tutorData.map((item) => (
+                                    <div className="col-span-1 ...">
+                                        <Card varian="md:mr-4">
+                                            <div className="grid grid-cols-12 ...">
+                                                <div className="col-span-2 ... "><img src={`../assets/${item.photo}`} alt="" /></div>
+                                                <div className="col-span-10 ...">
+                                                    <p className="text-sm mx-2 font-medium">{item.name}</p>
+                                                    <p className="text-xs mx-2">{item.position} di <span className="font-medium">{item.company}</span></p>
+                                                </div>
+                                            </div>
+                                            <p className="mt-2">{item.desc}</p>
+                                        </Card>
                                     </div>
-                                    <p className="mt-2">Berkarier di bidang HR selama lebih dari 3 tahun. Saat ini bekerja sebagai Senior Talent Acquisition Specialist di Wings Group Indonesia (Sayap Mas Utama) selama hampir 1 tahun.</p>
-                                </Card>
+                                ))}
                             </div>
-                            <div className="col-span-1 ...">
-                                <Card varian="md:mr-4">
-                                    <div className="grid grid-cols-12 ...">
-                                        <div className="col-span-2 ... "><img src="../assets/avatar5.svg" alt="" /></div>
-                                        <div className="col-span-10 ...">
-                                            <p className="text-sm mx-2 font-medium">Gregorius Edrik Lawanto</p>
-                                            <p className="text-xs mx-2">Senior Talent Acquisition di <span className="font-medium">WingsGroup</span></p>
-                                        </div>
-                                    </div>
-                                    <p className="mt-2">Berkarier di bidang HR selama lebih dari 3 tahun. Saat ini bekerja sebagai Senior Talent Acquisition Specialist di Wings Group Indonesia (Sayap Mas Utama) selama hampir 1 tahun.</p>
-                                </Card>
-                            </div>
-                        </div>
-                    </Card>
+                        </Card>
+                    )}
                     <Card varian="md:mr-4">
                         <H1>Kamu akan Mempelajari</H1><br />
                         {courseSections.map((section, index) => (
@@ -133,13 +136,15 @@ const strLimit = (str, limit) => {
                     </Card>
                 </div>
                 <div className="col-span-1 ... mx-2 sm:mx-0 order-1 md:order-2">
-                    <ItemSpesification isDetail={false} />
+                    {selectedClass && (
+                        <ItemSpesification isDetail={false} data={selectedClass} />
+                    )}
                 </div>
             </div>
             <h3 className="text-2xl font-weigh-200 mt-4">Video Pembelajaran Terkait Lainnya</h3>
             <p className="mt-2">Ekspansi Pengetahuan Anda dengan Rekomendasi Spesial Kami!</p>
             <div className="grid grid-cols-1 md:grid-cols-3 ...">
-                {items.length > 0 && items.slice(0, 3).map((item) => (
+                {limitedClass.length > 0 && limitedClass.slice(0, 3).map((item) => (
                     <CardItems 
                         key={item.id} 
                         id={item.id} 
@@ -149,7 +154,8 @@ const strLimit = (str, limit) => {
                         avatar={item.avatar} 
                         user={item.user} 
                         user_position={item.user_position} 
-                        user_company={item.user_company} 
+                        user_company={item.user_company}
+                        price={item.new_price}
                     />
                 ))}
             </div>

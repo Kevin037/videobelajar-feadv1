@@ -1,17 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { store } from '../../utils/db/service';
+import { parseFirestoreFields, store } from '../../utils/db/service';
 
 const initialState = {
-  currentUser: null,
+  currentOrder: null,
   loading: false,
   error: null,
 };
 
-export const registerUserThunk = createAsyncThunk(
-  'user/register',
-  async (userData, thunkAPI) => {
+export const createOrderThunk = createAsyncThunk(
+  'order/create',
+  async (orderData, thunkAPI) => {
     try {
-      const res = await store(userData,'users');
+      const res = await store(orderData,'orders');
       return res; // res berisi data document baru dari Firestore
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -19,8 +19,8 @@ export const registerUserThunk = createAsyncThunk(
   }
 );
 
-const userSlice = createSlice({
-  name: 'class',
+const orderSlice = createSlice({
+  name: 'order',
   initialState,
   reducers: {
     resetAll: () => {
@@ -35,21 +35,21 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(registerUserThunk.pending, (state) => {
+      .addCase(createOrderThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(registerUserThunk.fulfilled, (state, action) => {
+      .addCase(createOrderThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.currentUser = action.payload; // data user baru dari Firestore
+        state.currentOrder = parseFirestoreFields(action.payload.fields); // data user baru dari Firestore
       })
-      .addCase(registerUserThunk.rejected, (state, action) => {
+      .addCase(createOrderThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || action.error.message;
       });
   },
 });
 
-export const { resetUser } = userSlice.actions;
+export const { resetOrder } = orderSlice.actions;
 
-export default userSlice.reducer;
+export default orderSlice.reducer;

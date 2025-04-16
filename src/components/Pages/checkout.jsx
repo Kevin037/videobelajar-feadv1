@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Authlayout from "../Layouts/AuthLayout";
-import { getPaymentMethods } from "../../data";
+import { getPaymentMethods, getToken } from "../../data";
 import { ButtonPrimarySubmit } from "../Elements/button";
 import { Card } from "../Elements/card";
 import { H1 } from "../Elements/heading";
@@ -9,14 +9,18 @@ import { CheckCircle, ChevronDown } from "lucide-react";
 import { TransactionNominal } from "../Fragments/TransactionNominal";
 import useClass from "../../hooks/useClass";
 import { useParams } from "react-router-dom";
+import useOrder from "../../hooks/useOrder";
 
 const token = localStorage.getItem("token");
 const CheckoutPage = () => {
     const {id} = useParams();
     const [paytmentMethods,setPaytmentMethods] = useState([]);
     const [openGroup, setOpenGroup] = useState("Transfer Bank");
-    const [selectedMethod, setSelectedMethod] = useState("");
+    const [paymentMethod, setpaymentMethod] = useState("");
     const { selectedClass } = useClass("",id);
+    const [class_id, setClass_id] = useState(id);
+
+    const { currentOrder, createOrder } = useOrder();
 
 useEffect(() => {
     if(token === null) {
@@ -25,23 +29,26 @@ useEffect(() => {
     setPaytmentMethods(getPaymentMethods());
 }, []);
 
-const HandleCheckout = (event) => {
-    if (selectedMethod === "") {
+const HandleCheckout = (e) => {
+    e.preventDefault();
+    if (paymentMethod === "") {
         alert("Pilih Metode Pembayaran");
         return false;
     }
-    const data = {
-        id: "1",
-        metode: selectedMethod,
-        qty: 1,
-        price: 250000,
-        name: "Video Belajar",
-    }
     
-    event.preventDefault();
-    localStorage.setItem("transactions",JSON.stringify(data));
-    window.location.href = "/payment";
+
+    const no = "HEL/VI/"+getToken(true);
+    const order_id = getToken();
+    const paid_at = "";
+    const status = "pending";
+    createOrder({ order_id, no, class_id, paymentMethod, paid_at, status });
 };
+
+useEffect(() => {
+    if (currentOrder) {
+        window.location.href = "/payment/"+currentOrder.order_id;
+    }
+}, [currentOrder]);
 
  return (
     <Authlayout title="Home" navType="home" withFooter={false} style={{paddingTop: "0"}} customHead={<img src="../assets/process_choose_payment.svg" className="w-100" />}>
@@ -75,11 +82,11 @@ const HandleCheckout = (event) => {
                                     <button
                                     key={method.key}
                                     className={`flex items-center justify-between w-full px-4 py-3 hover:bg-gray-50 ${
-                                        selectedMethod === method.key
+                                        paymentMethod === method.key
                                         ? "bg-orange-50"
                                         : "bg-white"
                                     }`}
-                                    onClick={() => setSelectedMethod(method.key)}
+                                    onClick={() => setpaymentMethod(method.key)}
                                     >
                                     <div className="flex items-center gap-3">
                                         <img
@@ -89,7 +96,7 @@ const HandleCheckout = (event) => {
                                         />
                                         <span>{method.name}</span>
                                     </div>
-                                    {selectedMethod === method.key && (
+                                    {paymentMethod === method.key && (
                                         <CheckCircle className="text-orange-500 w-5 h-5" />
                                     )}
                                     </button>

@@ -137,7 +137,7 @@ const strLimit = (str, limit) => {
                 </div>
                 <div className="col-span-1 ... mx-2 sm:mx-0 order-1 md:order-2">
                     {selectedClass && (
-                        <ItemSpesification isDetail={false} data={selectedClass} />
+                        <ItemSpesification isDetail={false} data={selectedClass} id={id} />
                     )}
                 </div>
             </div>

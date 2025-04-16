@@ -5,7 +5,7 @@ import { H1, H2 } from "../Elements/heading";
 import { ButtonPrimary } from "../Elements/button";
 
 export const ItemSpesification = (props) => {
-    const {isDetail,data} = props
+    const {isDetail,data,id} = props
     const [facilities,setFacilities] = useState([]);
     useEffect(() => {
         setFacilities(getFacilities());
@@ -24,7 +24,7 @@ export const ItemSpesification = (props) => {
             {!isDetail && 
             <>
                 <p className="mt-2 text-sm text-blue-400">Penawaran spesial tersisa 2 hari lagi!</p>
-                <ButtonPrimary url="/checkout" varian="mt-4">Beli Sekarang</ButtonPrimary>
+                <ButtonPrimary url={`/checkout/${id}`} varian="mt-4">Beli Sekarang</ButtonPrimary>
             </>
             }
             <H2 varian="mt-4">Kelas Ini Sudah Termasuk</H2>

@@ -82,11 +82,11 @@ function buildFirestoreFields(data) {
     return fields;
   }
   
-  export async function registerUser(userData) {
-    const endpoint = `/projects/${PROJECT_ID}/databases/(default)/documents/users`;
+  export async function store(data,collectionName) {
+    const endpoint = `/projects/${PROJECT_ID}/databases/(default)/documents/${collectionName}`;
     
     const body = {
-      fields: buildFirestoreFields(userData),
+      fields: buildFirestoreFields(data),
     };
   
     const response = await api.post(endpoint, body);

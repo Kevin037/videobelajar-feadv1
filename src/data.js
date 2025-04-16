@@ -430,8 +430,9 @@ export const getClassses = (params="all") => {
 }
 
 export const formatNumberToK = (num) => {
-    if (num >= 1000) {
-      return (num / 1000).toFixed(0) + 'K';
+    const parsedNum = Number(num);
+    if (parsedNum >= 1000) {
+      return (parsedNum / 1000).toFixed(0) + 'K';
     }
-    return num.toString();
+    return parsedNum.toString();
   };

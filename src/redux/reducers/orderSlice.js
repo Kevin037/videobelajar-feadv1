@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { parseFirestoreFields, store } from '../../utils/db/service';
+import { parseFirestoreFields, retrieveData, store, update } from '../../utils/db/service';
 
 const initialState = {
+  orderData: [],
   currentOrder: null,
   loading: false,
   error: null,
@@ -19,6 +20,30 @@ export const createOrderThunk = createAsyncThunk(
   }
 );
 
+export const updateOrderThunk = createAsyncThunk(
+  'order/update',
+  async ({id,orderData}, thunkAPI) => {
+    try {
+      const res = await update(orderData,'orders',id);
+      return res; // res berisi data document baru dari Firestore
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getOrders = createAsyncThunk(
+  'order/fetch',
+  async (id, thunkAPI) => {
+    try {
+      const data = await retrieveData('orders', id);
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 const orderSlice = createSlice({
   name: 'order',
   initialState,
@@ -29,8 +54,8 @@ const orderSlice = createSlice({
     resetError: (state) => {
       state.error = false;
     },
-    resetclass: (state) => {
-      state.userData = [];
+    resetorder: (state) => {
+      state.orderData = [];
     },
   },
   extraReducers: (builder) => {
@@ -46,10 +71,33 @@ const orderSlice = createSlice({
       .addCase(createOrderThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || action.error.message;
+      })
+      .addCase(getOrders.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getOrders.fulfilled, (state, action) => {
+        state.loading = false;
+        state.orderData = action.payload[0];
+      })
+      .addCase(getOrders.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateOrderThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateOrderThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentOrder = action.payload; // data user baru dari Firestore
+      })
+      .addCase(updateOrderThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || action.error.message;
       });
   },
 });
 
-export const { resetOrder } = orderSlice.actions;
+export const { resetorder } = orderSlice.actions;
 
 export default orderSlice.reducer;

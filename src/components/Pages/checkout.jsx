@@ -29,6 +29,11 @@ useEffect(() => {
     setPaytmentMethods(getPaymentMethods());
 }, []);
 
+useEffect(() => {
+console.log(selectedClass);
+
+},[selectedClass])
+
 const HandleCheckout = (e) => {
     e.preventDefault();
     if (paymentMethod === "") {
@@ -41,7 +46,21 @@ const HandleCheckout = (e) => {
     const order_id = getToken();
     const paid_at = "";
     const status = "pending";
-    createOrder({ order_id, no, class_id, paymentMethod, paid_at, status });
+    const avatar = selectedClass.avatar;
+    const new_price = selectedClass.new_price;
+    const price = selectedClass.price;
+    const page_title = selectedClass.page_title;
+    const photo = selectedClass.photo;
+    const rating = selectedClass.rating;
+    const title = selectedClass.title;
+    const total_modul = selectedClass.total_modul;
+    const total_time = selectedClass.total_time;
+    const user = selectedClass.user;
+    const user_company = selectedClass.user_company;
+    const user_position = selectedClass.user_position;
+    createOrder({ order_id, no, class_id, paymentMethod, paid_at, status
+     , avatar, new_price, price, page_title, photo, rating, title, total_modul, total_time, user, user_company, user_position
+     });
 };
 
 useEffect(() => {

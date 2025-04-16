@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Authlayout from "../Layouts/AuthLayout";
-import { ButtonPrimary, ButtonWhite } from "../Elements/button";
+import { ButtonPrimary, ButtonPrimarySubmit, ButtonWhite } from "../Elements/button";
 import { Card } from "../Elements/card";
 import { H1 } from "../Elements/heading";
 import { ItemSpesification } from "../Fragments/ItemSpesification";
@@ -9,31 +9,46 @@ import { TransactionNominal } from "../Fragments/TransactionNominal";
 import { PaymentMethodDetail } from "../Fragments/PaymentMethodDetail";
 import { ChevronDown } from "lucide-react";
 import { PaymentTimer } from "../Fragments/PaymentTimer";
+import { useParams } from "react-router-dom";
+import useOrder from "../../hooks/useOrder";
 
 const token = localStorage.getItem("token");
-const data = JSON.parse(localStorage.getItem("transactions"));
+// const data = JSON.parse(localStorage.getItem("transactions"));
 const PaymentPage = () => {
-    const [transaction, setTransaction] = useState("");
+    const {id} = useParams();
     const [paymentMethod, setPaymentMethod] = useState("");
     const [openHowToPay, setOpenHowToPay] = useState("");
     const [howToPays, setHowToPays] = useState("");
+    const { orderData } = useOrder(id);
+    const { currentOrder, updateOrder } = useOrder();
 
     useEffect(() => {
         if(token === null) {
             window.location.href = "/login";
         }
-        console.log(data);
-        
-        if (!data) {
-            window.location.href = "/checkout";
-        }
-        setTransaction(data);
         setHowToPays(getHowToPay());
     },[]);
 
     useEffect(() => {
-        setPaymentMethod(getPaymentMethods(transaction.metode));
-    }, [transaction]);
+        setPaymentMethod(getPaymentMethods(orderData.paymentMethod));
+        console.log(orderData.id);
+        
+    }, [orderData]);
+
+    const HandlePaid = (e) => {
+        e.preventDefault();
+        if (paymentMethod === "") {
+            alert("Pilih Metode Pembayaran");
+            return false;
+        }
+        updateOrder(orderData.id,{ status:"success", paid_at: new Date().toISOString() });
+    };
+
+    useEffect(() => {
+        if (currentOrder) {
+            window.location.href = "/success_payment";
+        }
+    }, [currentOrder]);
 
  return (
     <Authlayout title="Home" navType="home" withFooter={false} style={{paddingTop: "0"}} customHead={<img src="../assets/process_payment.svg" className="w-100" />}>
@@ -52,7 +67,7 @@ const PaymentPage = () => {
                         <TransactionNominal /><br />
                         <div className="grid grid-cols-1 md:grid-cols-2  ... gap-2 mt-2">
                             <div className="col-span-1 my-1"><ButtonWhite url="/change_payment">Ganti Metode Pembayaran</ButtonWhite></div>
-                            <div className="col-span-1 my-1"><ButtonPrimary url="/success_payment">Bayar Sekarang</ButtonPrimary></div>
+                            <div className="col-span-1 my-1"><ButtonPrimarySubmit onClick={HandlePaid} >Bayar Sekarang</ButtonPrimarySubmit></div>
                         </div>
                     </Card>
                     <Card varian="md:mr-4">
@@ -82,7 +97,9 @@ const PaymentPage = () => {
                     </Card>
                 </div>
                 <div className="col-span-1 ... mx-2 sm:mx-0 order-1 lg:order-2">
-                    <ItemSpesification isDetail={true}/>
+                    {orderData && (
+                     <ItemSpesification isDetail={true} data={orderData}/>   
+                    )}
                 </div>
             </div>
         </div>

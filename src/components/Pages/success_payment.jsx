@@ -5,15 +5,10 @@ import { Card } from "../Elements/card";
 import { H2 } from "../Elements/heading";
 
 const token = localStorage.getItem("token");
-const data = JSON.parse(localStorage.getItem("transactions"));
 const SuccessPaymentPage = () => {
     useEffect(() => {
         if(token === null) {
             window.location.href = "/login";
-        }
-        
-        if (!data) {
-            window.location.href = "/checkout";
         }
     },[]);
 

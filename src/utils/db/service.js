@@ -43,7 +43,6 @@ export async function retrieveData(collectionName, filterGroup = null) {
   const formatted = documents.map((doc) => {
     const id = doc.name.split('/').pop();
     const fields = Object.entries(doc.fields || {}).reduce((acc, [key, val]) => {
-      // parsing stringValue, numberValue, etc.
       const value = Object.values(val)[0]; // ambil isi stringValue/numberValue/dll
       acc[key] = value;
       return acc;
@@ -62,6 +61,9 @@ export async function retrieveData(collectionName, filterGroup = null) {
     if (collectionName === 'class_tutors') {
       return formatted.filter(item => item.class_id === filterGroup); 
     }
+    if (collectionName === 'orders') {
+      return formatted.filter(item => item.order_id === filterGroup); 
+    }
   }
 
   return formatted;
@@ -76,8 +78,16 @@ export async function getClassById(id) {
 function buildFirestoreFields(data) {
     const fields = {};
     Object.entries(data).forEach(([key, value]) => {
-      // Asumsikan semua value bertipe string untuk registrasi sederhana
-      fields[key] = { stringValue: value };
+      if (typeof value === "number") {
+        fields[key] = { integerValue: value };
+      } else if (typeof value === "string") {
+        const isISODate = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.*Z$/.test(value);
+        fields[key] = isISODate
+          ? { timestampValue: value }
+          : { stringValue: value };
+      } else if (typeof value === "boolean") {
+        fields[key] = { booleanValue: value };
+      }
     });
     return fields;
   }
@@ -91,6 +101,22 @@ function buildFirestoreFields(data) {
   
     const response = await api.post(endpoint, body);
     return response.data;
+  }
+
+  export async function update(data, collectionName, documentId) {
+    const endpoint = `/projects/${PROJECT_ID}/databases/(default)/documents/${collectionName}/${documentId}`;
+  
+    const fieldPaths = Object.keys(data).map((key) => `updateMask.fieldPaths=${key}`).join("&");
+
+    const body = {
+      fields: buildFirestoreFields(data),
+    };
+  
+    await api.patch(`${endpoint}?${fieldPaths}`, body); // PATCH, bukan POST
+    return {
+      id: documentId,
+      ...data,
+    };
   }
  
   export async function loginUser({ email, password }) {

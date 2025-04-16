@@ -69,8 +69,8 @@ export async function retrieveData(collectionName, filterGroup = null) {
   return formatted;
 }
 
-export async function getClassById(id) {
-  const endpoint = `/projects/${PROJECT_ID}/databases/(default)/documents/classes/${id}`;
+export async function getDataById(id,collectionName) {
+  const endpoint = `/projects/${PROJECT_ID}/databases/(default)/documents/${collectionName}/${id}`;
   const response = await api.get(endpoint);
   return response.data;
 }

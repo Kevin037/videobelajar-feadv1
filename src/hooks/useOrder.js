@@ -1,13 +1,12 @@
 // hooks/useUser.js
 import { useDispatch, useSelector } from 'react-redux';
-import { createOrderThunk, getOrders, updateOrderThunk } from '../redux/reducers/orderSlice';
+import { createOrderThunk, getOrderById, getOrders, updateOrderThunk } from '../redux/reducers/orderSlice';
 import { useEffect } from 'react';
 
-const useOrder = (id=null) => {
+const useOrder = (order_id=null,id=null) => {
   const dispatch = useDispatch();
-  const { orderData, currentOrder, loading, error } = useSelector(state => state.order);
+  const { orderData, currentOrder, loading, error, status } = useSelector(state => state.order);
 
-  // Fungsi register, terima userData misal { name, email, password }
   const createOrder = (userData) => {
     dispatch(createOrderThunk(userData));
   };
@@ -17,12 +16,15 @@ const useOrder = (id=null) => {
   };
 
     useEffect(() => {
+      if (order_id) {
+        dispatch(getOrders(order_id)); 
+      }
       if (id) {
-        dispatch(getOrders(id)); 
+        dispatch(getOrderById(id));
       }
     }, [dispatch]);
 
-  return { currentOrder, loading, error, createOrder, orderData, updateOrder };
+  return { currentOrder, loading, error, createOrder, orderData, updateOrder, status };
 };
 
 export default useOrder;

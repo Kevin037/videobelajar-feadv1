@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getClassById, parseFirestoreFields, retrieveData } from '../../utils/db/service';
+import { getDataById, parseFirestoreFields, retrieveData } from '../../utils/db/service';
 
 const initialState = {
   selectedClass:null,
@@ -33,7 +33,7 @@ export const fetchClassById = createAsyncThunk(
   'class/getById',
   async (id, thunkAPI) => {
     try {
-      const res = await getClassById(id);
+      const res = await getDataById(id, 'classes');
       return res;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

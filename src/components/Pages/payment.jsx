@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Authlayout from "../Layouts/AuthLayout";
-import { ButtonPrimary, ButtonPrimarySubmit, ButtonWhite } from "../Elements/button";
+import { ButtonPrimarySubmit, ButtonWhite } from "../Elements/button";
 import { Card } from "../Elements/card";
 import { H1 } from "../Elements/heading";
 import { ItemSpesification } from "../Fragments/ItemSpesification";
@@ -13,14 +13,13 @@ import { useParams } from "react-router-dom";
 import useOrder from "../../hooks/useOrder";
 
 const token = localStorage.getItem("token");
-// const data = JSON.parse(localStorage.getItem("transactions"));
 const PaymentPage = () => {
     const {id} = useParams();
     const [paymentMethod, setPaymentMethod] = useState("");
     const [openHowToPay, setOpenHowToPay] = useState("");
     const [howToPays, setHowToPays] = useState("");
     const { orderData } = useOrder(id);
-    const { currentOrder, updateOrder } = useOrder();
+    const { updateOrder, status } = useOrder();
 
     useEffect(() => {
         if(token === null) {
@@ -31,8 +30,6 @@ const PaymentPage = () => {
 
     useEffect(() => {
         setPaymentMethod(getPaymentMethods(orderData.paymentMethod));
-        console.log(orderData.id);
-        
     }, [orderData]);
 
     const HandlePaid = (e) => {
@@ -45,10 +42,10 @@ const PaymentPage = () => {
     };
 
     useEffect(() => {
-        if (currentOrder) {
+        if (status) {
             window.location.href = "/success_payment";
         }
-    }, [currentOrder]);
+    }, [status]);
 
  return (
     <Authlayout title="Home" navType="home" withFooter={false} style={{paddingTop: "0"}} customHead={<img src="../assets/process_payment.svg" className="w-100" />}>
@@ -66,7 +63,7 @@ const PaymentPage = () => {
                         )}
                         <TransactionNominal /><br />
                         <div className="grid grid-cols-1 md:grid-cols-2  ... gap-2 mt-2">
-                            <div className="col-span-1 my-1"><ButtonWhite url="/change_payment">Ganti Metode Pembayaran</ButtonWhite></div>
+                            <div className="col-span-1 my-1"><ButtonWhite url={`/change_payment/${orderData.id}`}>Ganti Metode Pembayaran</ButtonWhite></div>
                             <div className="col-span-1 my-1"><ButtonPrimarySubmit onClick={HandlePaid} >Bayar Sekarang</ButtonPrimarySubmit></div>
                         </div>
                     </Card>

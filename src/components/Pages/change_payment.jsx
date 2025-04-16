@@ -7,40 +7,46 @@ import { ItemSpesification } from "../Fragments/ItemSpesification";
 import { getPaymentMethodGroup, getPaymentMethods } from "../../data";
 import { TransactionNominal } from "../Fragments/TransactionNominal";
 import { CheckCircle, ChevronDown } from "lucide-react";
+import useOrder from "../../hooks/useOrder";
+import { useParams } from "react-router-dom";
 
 const token = localStorage.getItem("token");
-const data = JSON.parse(localStorage.getItem("transactions"));
 const ChangePaymentPage = () => {
+    const {id} = useParams();
     const [paytmentMethods,setPaytmentMethods] = useState([]);
     const [openGroup, setOpenGroup] = useState("Transfer Bank");
-    const [selectedMethod, setSelectedMethod] = useState("");
-    const [transaction, setTransaction] = useState("");
+    const [paymentMethod, setPaymentMethod] = useState("");
+    const { currentOrder } = useOrder(null,id);
+    const { updateOrder, status } = useOrder();
 
 useEffect(() => {
     if(token === null) {
         window.location.href = "/login";
     }
-    setTransaction(data);
     setPaytmentMethods(getPaymentMethods());
 }, []);
 
 useEffect(() => {
-    setSelectedMethod(transaction.metode);
-    setOpenGroup(getPaymentMethodGroup(transaction.metode));
-}, [transaction]);
+    if (currentOrder) {
+        setPaymentMethod(currentOrder.paymentMethod);
+        setOpenGroup(getPaymentMethodGroup(currentOrder.paymentMethod));   
+    }
+}, [currentOrder]);
 
-const UpdateTransaction = (event) => {
-    if (selectedMethod === "") {
+const UpdateTransaction = (e) => {
+    e.preventDefault();
+    if (paymentMethod === "") {
         alert("Pilih Metode Pembayaran");
         return false;
     }
-    const data = transaction;
-    const updateData = {...data, metode: selectedMethod};
-    
-    event.preventDefault();
-    localStorage.setItem("transactions",JSON.stringify(updateData));
-    window.location.href = "/payment";
+    updateOrder(id,{ paymentMethod });
 };
+
+useEffect(() => {
+    if (status) {
+        window.location.href = "/payment/"+currentOrder.order_id;
+    }
+}, [status]);
 
  return (
     <Authlayout title="Home" navType="home" withFooter={false} style={{paddingTop: "0"}} customHead={<img src="../assets/process_choose_payment.svg" className="w-100" />}>
@@ -77,11 +83,11 @@ const UpdateTransaction = (event) => {
                                     <button
                                     key={method.key}
                                     className={`flex items-center justify-between w-full px-4 py-3 hover:bg-gray-50 ${
-                                        selectedMethod === method.key
+                                        paymentMethod === method.key
                                         ? "bg-orange-50"
                                         : "bg-white"
                                     }`}
-                                    onClick={() => setSelectedMethod(method.key)}
+                                    onClick={() => setPaymentMethod(method.key)}
                                     >
                                     <div className="flex items-center gap-3">
                                         <img
@@ -91,7 +97,7 @@ const UpdateTransaction = (event) => {
                                         />
                                         <span>{method.name}</span>
                                     </div>
-                                    {selectedMethod === method.key && (
+                                    {paymentMethod === method.key && (
                                         <CheckCircle className="text-orange-500 w-5 h-5" />
                                     )}
                                     </button>
@@ -104,7 +110,9 @@ const UpdateTransaction = (event) => {
                     </Card>
                 </div>
                 <div className="col-span-1 ... mx-2 sm:mx-0 order-1 lg:order-2">
-                    <ItemSpesification isDetail={true}/>
+                    {currentOrder && (
+                        <ItemSpesification isDetail={true} data={currentOrder}/>
+                    )}
                 </div>
             </div>
         </div>

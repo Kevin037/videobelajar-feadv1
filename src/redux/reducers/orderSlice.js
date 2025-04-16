@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { parseFirestoreFields, retrieveData, store, update } from '../../utils/db/service';
+import { getDataById, parseFirestoreFields, retrieveData, store, update } from '../../utils/db/service';
 
 const initialState = {
   orderData: [],
   currentOrder: null,
   loading: false,
   error: null,
+  status: null
 };
 
 export const createOrderThunk = createAsyncThunk(
@@ -38,6 +39,18 @@ export const getOrders = createAsyncThunk(
     try {
       const data = await retrieveData('orders', id);
       return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getOrderById = createAsyncThunk(
+  'order/getById',
+  async (id, thunkAPI) => {
+    try {
+      const res = await getDataById(id,'orders');
+      return res;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -89,11 +102,22 @@ const orderSlice = createSlice({
       })
       .addCase(updateOrderThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.currentOrder = action.payload; // data user baru dari Firestore
+        state.status = action.payload; // data user baru dari Firestore
       })
       .addCase(updateOrderThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || action.error.message;
+      })
+      .addCase(getOrderById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getOrderById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentOrder = parseFirestoreFields(action.payload.fields);
+      })
+      .addCase(getOrderById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });

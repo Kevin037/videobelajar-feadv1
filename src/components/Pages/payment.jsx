@@ -29,7 +29,7 @@ const PaymentPage = () => {
     },[]);
 
     useEffect(() => {
-        setPaymentMethod(getPaymentMethods(orderData.paymentMethod));
+        setPaymentMethod(getPaymentMethods(orderData[0]?.paymentMethod));
     }, [orderData]);
 
     const HandlePaid = (e) => {
@@ -38,7 +38,7 @@ const PaymentPage = () => {
             alert("Pilih Metode Pembayaran");
             return false;
         }
-        updateOrder(orderData.id,{ status:"success", paid_at: new Date().toISOString() });
+        updateOrder(orderData[0]?.id,{ status:"success", paid_at: new Date().toISOString() });
     };
 
     useEffect(() => {
@@ -63,7 +63,7 @@ const PaymentPage = () => {
                         )}
                         <TransactionNominal /><br />
                         <div className="grid grid-cols-1 md:grid-cols-2  ... gap-2 mt-2">
-                            <div className="col-span-1 my-1"><ButtonWhite url={`/change_payment/${orderData.id}`}>Ganti Metode Pembayaran</ButtonWhite></div>
+                            <div className="col-span-1 my-1"><ButtonWhite url={`/change_payment/${orderData[0]?.id}`}>Ganti Metode Pembayaran</ButtonWhite></div>
                             <div className="col-span-1 my-1"><ButtonPrimarySubmit onClick={HandlePaid} >Bayar Sekarang</ButtonPrimarySubmit></div>
                         </div>
                     </Card>
@@ -95,7 +95,7 @@ const PaymentPage = () => {
                 </div>
                 <div className="col-span-1 ... mx-2 sm:mx-0 order-1 lg:order-2">
                     {orderData && (
-                     <ItemSpesification isDetail={true} data={orderData}/>   
+                     <ItemSpesification isDetail={true} data={orderData[0]}/>   
                     )}
                 </div>
             </div>

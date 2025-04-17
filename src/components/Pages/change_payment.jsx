@@ -16,7 +16,7 @@ const ChangePaymentPage = () => {
     const [paytmentMethods,setPaytmentMethods] = useState([]);
     const [openGroup, setOpenGroup] = useState("Transfer Bank");
     const [paymentMethod, setPaymentMethod] = useState("");
-    const { currentOrder } = useOrder(null,id);
+    const { currentOrder } = useOrder(id);
     const { updateOrder, status } = useOrder();
 
 useEffect(() => {

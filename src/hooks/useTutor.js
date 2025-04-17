@@ -9,7 +9,8 @@ const useTutor = (class_id=null) => {
   const error = useSelector(state => state.class.error);
 
   useEffect(() => {
-    dispatch(getTutors(class_id));
+    const columnName = class_id ? 'class_id' : null;
+    dispatch(getTutors({class_id,columnName}));
   }, [dispatch]);
 
   return { tutorData, loading, error};

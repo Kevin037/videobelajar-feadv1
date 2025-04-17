@@ -11,6 +11,7 @@ const Authlayout = (props) => {
     const {children, navType, withFooter, varianHead, style, customHead=""} = props
     const handleLogout = () => {
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
       window.location.href = "/login";
     }
     

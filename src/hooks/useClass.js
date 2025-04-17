@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchClassById, getClasses } from '../redux/reducers/classSlice';
 
-const useClass = (filterGroup=null,id=null,limit=0,enabled = true) => {
+const useClass = (type=null,id=null,limit=0,enabled = true) => {
   const dispatch = useDispatch();
   const {classData, selectedClass} = useSelector((state) => state.class);
   const limitedClass = classData.slice(0,limit);
@@ -11,11 +11,12 @@ const useClass = (filterGroup=null,id=null,limit=0,enabled = true) => {
 
   useEffect(() => {
     if (!enabled) return;
-    dispatch(getClasses(filterGroup));
+    const columnName = type ? 'group' : null;
+    dispatch(getClasses({type,columnName}));
     if (id) {
       dispatch(fetchClassById(id)); 
     }
-  }, [dispatch,filterGroup]);
+  }, [dispatch,type]);
 
   return { classData, loading, error, selectedClass, limitedClass};
 };

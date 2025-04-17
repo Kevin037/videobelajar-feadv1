@@ -34,10 +34,6 @@ const toggle = (index) => {
   setOpenIndex(openIndex === index ? null : index);
 };
 
-useEffect(() => {
-  console.log(tutorData);
-}, [tutorData]);
-
 const strLimit = (str, limit) => {
     if (!str) return "";
     return str.length > limit ? str.substring(0, limit) + "..." : str;
@@ -71,7 +67,7 @@ const strLimit = (str, limit) => {
                             <H1>Belajar bersama Tutor Profesional</H1><br />
                             <div className="grid grid-cols-1 md:grid-cols-2 ...">
                                 {tutorData.map((item) => (
-                                    <div className="col-span-1 ...">
+                                    <div className="col-span-1 ..." key={item.id}>
                                         <Card varian="md:mr-4">
                                             <div className="grid grid-cols-12 ...">
                                                 <div className="col-span-2 ... "><img src={`../assets/${item.photo}`} alt="" /></div>

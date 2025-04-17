@@ -33,7 +33,7 @@ export const parseFirestoreFields = (data) => {
   return parsed;
 };
 
-export async function retrieveData(collectionName, filterGroup = null) {
+export async function retrieveData(collectionName, filterGroup = null, columnName = null) {
   const endpoint = `/projects/${PROJECT_ID}/databases/(default)/documents/${collectionName}`;
 
   const response = await api.get(endpoint);
@@ -55,15 +55,7 @@ export async function retrieveData(collectionName, filterGroup = null) {
 
   // filter jika dibutuhkan
   if (filterGroup) {
-    if (collectionName === 'classes') {
-      return formatted.filter(item => item.group === filterGroup); 
-    }
-    if (collectionName === 'class_tutors') {
-      return formatted.filter(item => item.class_id === filterGroup); 
-    }
-    if (collectionName === 'orders') {
-      return formatted.filter(item => item.order_id === filterGroup); 
-    }
+    return formatted.filter(item => item[columnName] === filterGroup); 
   }
 
   return formatted;

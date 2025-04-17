@@ -7,6 +7,7 @@ export const loginUserThunk = createAsyncThunk(
     try {
       const user = await loginUser(credentials);
       const token = btoa(JSON.stringify({ email: user.email, time: new Date() }));
+      localStorage.setItem("user", user.id);
       localStorage.setItem("token", token);
       return token;
     } catch (error) {

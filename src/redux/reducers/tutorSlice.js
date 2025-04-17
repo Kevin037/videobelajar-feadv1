@@ -10,9 +10,9 @@ const initialState = {
 
 export const getTutors = createAsyncThunk(
   'class_tutors/fetch',
-  async (class_id, thunkAPI) => {
+  async ({class_id,columnName}, thunkAPI) => {
     try {
-      const data = await retrieveData('class_tutors', class_id);
+      const data = await retrieveData('class_tutors', class_id, columnName);
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

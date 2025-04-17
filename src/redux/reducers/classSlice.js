@@ -19,9 +19,9 @@ const initialState = {
 
 export const getClasses = createAsyncThunk(
   'class/fetch',
-  async (type, thunkAPI) => {
+  async ({type, columnName}, thunkAPI) => {
     try {
-      const data = await retrieveData('classes', type);
+      const data = await retrieveData('classes', type,columnName);
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

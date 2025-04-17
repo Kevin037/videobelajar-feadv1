@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import useOrder from "../../hooks/useOrder";
 
 const token = localStorage.getItem("token");
+const auth = localStorage.getItem("user");
 const CheckoutPage = () => {
     const {id} = useParams();
     const [paytmentMethods,setPaytmentMethods] = useState([]);
@@ -28,11 +29,6 @@ useEffect(() => {
     }
     setPaytmentMethods(getPaymentMethods());
 }, []);
-
-useEffect(() => {
-console.log(selectedClass);
-
-},[selectedClass])
 
 const HandleCheckout = (e) => {
     e.preventDefault();
@@ -58,8 +54,10 @@ const HandleCheckout = (e) => {
     const user = selectedClass.user;
     const user_company = selectedClass.user_company;
     const user_position = selectedClass.user_position;
+    const user_id = auth;
+
     createOrder({ order_id, no, class_id, paymentMethod, paid_at, status
-     , avatar, new_price, price, page_title, photo, rating, title, total_modul, total_time, user, user_company, user_position
+     , avatar, new_price, price, page_title, photo, rating, title, total_modul, total_time, user, user_company, user_position, user_id
      });
 };
 

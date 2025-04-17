@@ -18,7 +18,7 @@ const PaymentPage = () => {
     const [paymentMethod, setPaymentMethod] = useState("");
     const [openHowToPay, setOpenHowToPay] = useState("");
     const [howToPays, setHowToPays] = useState("");
-    const { orderData } = useOrder(id);
+    const { orderData } = useOrder(null,id,"order_id");
     const { updateOrder, status } = useOrder();
 
     useEffect(() => {

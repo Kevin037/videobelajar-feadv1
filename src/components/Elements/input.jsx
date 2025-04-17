@@ -31,14 +31,14 @@ export const InputButton = forwardRef((props,ref) => {
     )
 })
 
-export const FloatingInput = ({ label, value, onChange, name, className = '' }) => {
+export const FloatingInput = ({ label, value, onChange, name, className = '', type="text" }) => {
     return (
       <div className={`relative border rounded-lg px-4 pt-3 pb-1 ${className}`}>
         <label className="absolute -top-2 left-3 bg-white px-1 text-xs text-green-500 font-medium">
           {label}
         </label>
         <input
-          type="text"
+          type={type}
           name={name}
           value={value}
           onChange={onChange}

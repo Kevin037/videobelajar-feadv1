@@ -1,20 +1,31 @@
 // hooks/useUser.js
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUserThunk, resetUser } from '../redux/reducers/userSlice';
+import { getUserById, registerUserThunk, resetUser, updateUserThunk } from '../redux/reducers/userSlice';
+import { useEffect } from 'react';
 
-const useUser = () => {
+const useUser = (id=null) => {
   const dispatch = useDispatch();
-  const { currentUser, loading, error } = useSelector(state => state.user);
+  const { currentUser, loading, error, status } = useSelector(state => state.user);
 
   // Fungsi register, terima userData misal { name, email, password }
   const register = (userData) => {
     dispatch(registerUserThunk(userData));
   };
 
+    const update = (id,userData) => {
+      dispatch(updateUserThunk({id,userData}));
+    };
+
   // Optional reset state
   const reset = () => dispatch(resetUser());
 
-  return { currentUser, loading, error, register, reset };
+    useEffect(() => {
+      if (id) {
+        dispatch(getUserById(id));
+      }
+    }, [dispatch]);
+
+  return { currentUser, loading, error, register, reset, update, status };
 };
 
 export default useUser;

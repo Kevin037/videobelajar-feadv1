@@ -1,33 +1,44 @@
 import { useEffect, useState } from "react";
 import Authlayout from "../Layouts/AuthLayout";
-import { getOrders, getOrderStatuses } from "../../data";
 import { Card } from "../Elements/card";
 import { H2 } from "../Elements/heading";
 import { SidebarMenu } from "../Fragments/SidebarMenu";
-import { ButtonPrimaryMD } from "../Elements/button";
+import { ButtonPrimaryMDSubmit } from "../Elements/button";
 import { FloatingInput, Select } from "../Elements/input";
+import useUser from "../../hooks/useUser";
 
 const token = localStorage.getItem("token");
+const auth = localStorage.getItem("user");
 const ProfilePage = () => {
 
-    const [activeTab, setActiveTab] = useState("all");
-    const [orderStatus, setOrderStatus] = useState([]);
-    const [orders,setOrders] = useState([]);
+    const { currentUser } = useUser(auth);
+    const [name, setName] = useState("");
+    const [no_hp, setNoHp] = useState("");
+    const { update, status } = useUser();
 
     useEffect(() => {
         if(token === null) {
             window.location.href = "/login";
         }
-        setOrderStatus(getOrderStatuses());
-        setOrders(getOrders());
     }, []);
 
     useEffect(() => {
-    }, [orders]);
+        if (currentUser) {
+            setName(currentUser.name);
+            setNoHp(currentUser.no_hp);
+        }
+    }, [currentUser]);
+
+    const HandlePaid = (e) => {
+        e.preventDefault();
+        update(auth,{ name, no_hp });
+    };
 
     useEffect(() => {
-        setOrders(getOrders(activeTab));
-    }, [activeTab]);
+        if (status) {
+            window.location.reload();   
+        }
+    },[status])
  return (
     <Authlayout title="Home" navType="home" withFooter={true}>
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -47,10 +58,10 @@ const ProfilePage = () => {
                                 alt="" />
                             </div>
                             <div className="col-span-9 md:col-span-10 ...">
-                                <p className="text-sm">
-                                    <H2>John Jennie Ruby Jane</H2>
-                                    <p>rubyjane@gmail.com</p>
-                                </p>
+                                <div className="text-sm">
+                                    <H2>{currentUser?.name}</H2>
+                                    <p>{currentUser?.email}</p>
+                                </div>
                                 <button className="mt-3 text-red-600 text-sm cursor-pointer">Ganti Foto Profil</button>
                             </div>
                         </div>
@@ -58,17 +69,16 @@ const ProfilePage = () => {
                         <div className="grid grid-cols-4 md:grid-cols-9 mt-6 gap-3">
                             <FloatingInput
                                 label="Nama Lengkap"
-                                value="Jennie Ruby Jane"
+                                value={name}
                                 name="nama"
-                                onChange={() => {}}
+                                onChange={e => setName(e.target.value)}
                                 className="col-span-4 md:col-span-3"
                             />
 
                             <FloatingInput
                                 label="E-Mail"
-                                value="rubyjane@gmail.com"
+                                value={currentUser?.email}
                                 name="email"
-                                onChange={() => {}}
                                 className="col-span-4 md:col-span-3"
                             />
 
@@ -77,14 +87,15 @@ const ProfilePage = () => {
                             </Select>
                             <FloatingInput
                                 label="No. Hp"
-                                value="81234567890"
+                                value={no_hp}
                                 name="hp"
-                                onChange={() => {}}
+                                onChange={e => setNoHp(e.target.value)}
                                 className="col-span-3 md:col-span-2"
+                                type="number"
                             />
                         </div>
                         <div className="mt-4 flex justify-end">
-                            <ButtonPrimaryMD url="#">Simpan</ButtonPrimaryMD>
+                            <ButtonPrimaryMDSubmit onClick={HandlePaid}>Simpan</ButtonPrimaryMDSubmit>
                         </div>
                     </Card>
                 </div>

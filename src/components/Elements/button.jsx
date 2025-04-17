@@ -50,6 +50,19 @@ export const ButtonSubmitTheme = (props) => {
   );
 }
 
+export const ButtonSubmitMDTheme = (props) => {
+  const {type, children, varian, onClick} = props
+  return (
+    <button 
+      className={`block md:inline-block bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition cursor-pointer ${varian}`} 
+      type={type}
+      onClick={onClick}
+      >
+    {children}
+    </button>
+  );
+}
+
 export const ButtonPrimarySubmit = (props) => {
   const {type, children, varian, onClick} = props
   return (
@@ -81,6 +94,18 @@ export const ButtonPrimaryMD = (props) => {
       className={`${varian} block md:inline-block bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition cursor-pointer`}>
     {children}
     </Link>
+  );
+}
+
+export const ButtonPrimaryMDSubmit = (props) => {
+  const {type, children, varian, onClick} = props
+  return (
+    <ButtonSubmitMDTheme 
+      type={type}
+      onClick={onClick}
+      varian={`${varian}`}>
+    {children}
+    </ButtonSubmitMDTheme>
   );
 }
 

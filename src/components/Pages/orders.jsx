@@ -7,28 +7,30 @@ import { Link } from "react-router-dom";
 import { OrderCard } from "../Fragments/SegmentCard";
 import { Pagination } from "../Fragments/Pagination";
 import { SidebarMenu } from "../Fragments/SidebarMenu";
+import useOrder from "../../hooks/useOrder";
 
 const token = localStorage.getItem("token");
+const auth = localStorage.getItem("user");
 const OrderPage = () => {
 
     const [activeTab, setActiveTab] = useState("all");
     const [orderStatus, setOrderStatus] = useState([]);
-    const [orders,setOrders] = useState([]);
+    let id_order = null;
+    let categoryParam = null;
+    let categoryColumn = null;
+    let user_id = auth;
+    if (activeTab !== "all") {
+        categoryParam = activeTab;
+        categoryColumn = "status";
+      }
+    const { orderData } = useOrder(id_order, categoryParam, categoryColumn, user_id);
 
     useEffect(() => {
         if(token === null) {
             window.location.href = "/login";
         }
         setOrderStatus(getOrderStatuses());
-        setOrders(getOrders());
     }, []);
-
-    useEffect(() => {
-    }, [orders]);
-
-    useEffect(() => {
-        setOrders(getOrders(activeTab));
-    }, [activeTab]);
 
  return (
     <Authlayout title="Home" navType="home" withFooter={true}>
@@ -58,10 +60,10 @@ const OrderPage = () => {
                             ))}
                             </div>
                         </div>
-                        {orders.length > 0 && orders.map((order) => (
+                        {orderData.length > 0 && orderData.map((order) => (
                             <OrderCard order={order} key={order.id} />
                         ))}
-                        {orders.length > 0 && (
+                        {orderData.length > 0 && (
                             <Pagination />
                         )}
                     </Card>

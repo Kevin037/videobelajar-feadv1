@@ -35,9 +35,9 @@ export const updateOrderThunk = createAsyncThunk(
 
 export const getOrders = createAsyncThunk(
   'order/fetch',
-  async ({order_id,columnName}, thunkAPI) => {
+  async ({order_id,columnName,user_id}, thunkAPI) => {
     try {
-      const data = await retrieveData('orders', order_id, columnName);
+      const data = await retrieveData('orders', order_id, columnName,user_id);
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

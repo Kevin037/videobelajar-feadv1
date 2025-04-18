@@ -123,7 +123,7 @@ export const OrderCard = (props) => {
                 middleContent={
                     <>
                         <div className="col-span-3 md:col-span-1 ...">
-                            <img className="rounded-lg object-cover h-auto" src={order.img} alt="" />
+                            <img className="rounded-lg object-cover h-auto" src={`../assets/${order.photo}`} alt="" />
                         </div>
                         <div className="col-span-9 md:col-span-9 ...border-r border-gray-300">
                             <p className="text-lg">{order.title}</p>

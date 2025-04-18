@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createOrderThunk, getOrderById, getOrders, updateOrderThunk } from '../redux/reducers/orderSlice';
 import { useEffect } from 'react';
 
-const useOrder = (id=null,order_id=null, columnName=null) => {
+const useOrder = (id=null,order_id=null, columnName=null, user_id = null) => {
   const dispatch = useDispatch();
   const { orderData, currentOrder, loading, error, status } = useSelector(state => state.order);
 
@@ -16,13 +16,13 @@ const useOrder = (id=null,order_id=null, columnName=null) => {
   };
 
     useEffect(() => {
-      if (order_id) {
-        dispatch(getOrders({order_id,columnName})); 
+      if (order_id || user_id) {
+        dispatch(getOrders({order_id,columnName, user_id})); 
       }
       if (id) {
         dispatch(getOrderById(id));
       }
-    }, [dispatch]);
+    }, [dispatch,order_id]);
 
   return { currentOrder, loading, error, createOrder, orderData, updateOrder, status };
 };

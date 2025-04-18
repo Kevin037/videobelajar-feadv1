@@ -33,7 +33,7 @@ export const parseFirestoreFields = (data) => {
   return parsed;
 };
 
-export async function retrieveData(collectionName, filterGroup = null, columnName = null) {
+export async function retrieveData(collectionName, filterGroup = null, columnName = null, user = null) {
   const endpoint = `/projects/${PROJECT_ID}/databases/(default)/documents/${collectionName}`;
 
   const response = await api.get(endpoint);
@@ -55,7 +55,15 @@ export async function retrieveData(collectionName, filterGroup = null, columnNam
 
   // filter jika dibutuhkan
   if (filterGroup) {
-    return formatted.filter(item => item[columnName] === filterGroup); 
+    if (user) {
+      return formatted.filter(
+        item => item[columnName] === filterGroup && item.user_id === user
+      ); 
+    } else {
+      return formatted.filter(
+        item => item[columnName] === filterGroup
+      ); 
+    }
   }
 
   return formatted;

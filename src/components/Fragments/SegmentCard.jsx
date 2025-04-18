@@ -29,6 +29,8 @@ export const SegmentCard = (props) => {
 
 export const ClassCard = (props) => {
     const {order} = props
+    console.log(order);
+    
     return (
         <>
         <SegmentCard 
@@ -38,21 +40,21 @@ export const ClassCard = (props) => {
                          <p className="hidden md:block">{order.modul_progress} Modul Terselesaikan</p>
                      </div>
                      <div className="col-span-3 ... text-left md:text-right mt-3 md:mt-0">
-                        <ClassStatusDisplay status={order.status} />
+                        <ClassStatusDisplay status={order.class_status} />
                      </div>
                 </>
             }
             middleContent={
                 <>
                     <div className="col-span-12 md:col-span-3 ... gap-3 object-cover h-auto">
-                        <img className="object-cover h-full w-full rounded-lg" src={order.photo} alt="" />
+                        <img className="object-cover h-full w-full rounded-lg" src={`../assets/${order.photo}`} alt="" />
                     </div>
                     <div className="col-span-12 md:col-span-9 ... mx-2 sm:mx-0">
                         <h4 className="text-ls mt-2 md:mt-0 font-bold">{order.title}</h4>
                         <p className="text-sm mt-2 hidden md:block">Mulai transformasi dengan instruktur profesional, harga yang terjangkau, dan  kurikulum terbaik</p>
                         <div className="my-2 grid grid-cols-3 grid-cols-12">
                             <div className="col-span-2 md:col-span-1">
-                                <img src={order.avatar} alt="" />
+                                <img src={`../assets/${order.avatar}`} alt="" />
                             </div>
                             <div className="text-sm col-span-10 md:col-span-10 ...">
                                 <p><b>{order.user}</b></p>
@@ -75,14 +77,14 @@ export const ClassCard = (props) => {
                         Progres Kelas: <span className="font-bold">{order.percentage_progress}%</span>
                     </div>
                     <div className={`flex items-center col-span-6 ${(order.status == "in_progress") ? "md:col-span-5" : "md:col-span-3"}`}>
-                        {(order.status == "in_progress") && (
+                        {(order.class_status == "in_progress") && (
                             <img src="../assets/progress_bar_completed.svg" className="justify-center w-full" alt="" />
                         )}
-                        {(order.status == "completed") && (
+                        {(order.class_status == "completed") && (
                             <img src="../assets/progress_bar.svg" className="justify-center w-full" alt="" />  
                         )}
                     </div>
-                    {(order.status == "completed") && (
+                    {(order.class_status == "completed") && (
                         <>
                             <div className={`text-center md:text-right col-span-12 md:col-span-3 mt-4 md:mt-0`}>
                                 <ButtonWhiteMD varian="mx-1">Unduh Sertifikat</ButtonWhiteMD>
@@ -92,7 +94,7 @@ export const ClassCard = (props) => {
                             </div>
                         </>
                     )}
-                    {(order.status == "in_progress") && (
+                    {(order.class_status == "in_progress") && (
                         <div className={`text-center md:text-right col-span-12 md:col-span-4 mt-4 md:mt-0`}>
                             <ButtonPrimaryMD varian="">Lanjutkan Pembelajaran</ButtonPrimaryMD>  
                         </div>

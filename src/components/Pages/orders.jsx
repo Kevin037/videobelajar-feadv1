@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import Authlayout from "../Layouts/AuthLayout";
-import { getOrders, getOrderStatuses, getSidebarMenus } from "../../data";
+import { getOrderStatuses } from "../../data";
 import { Card } from "../Elements/card";
 import { H2 } from "../Elements/heading";
-import { Link } from "react-router-dom";
 import { OrderCard } from "../Fragments/SegmentCard";
 import { Pagination } from "../Fragments/Pagination";
 import { SidebarMenu } from "../Fragments/SidebarMenu";

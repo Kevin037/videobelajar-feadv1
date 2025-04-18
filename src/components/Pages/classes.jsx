@@ -1,31 +1,36 @@
 import { useEffect, useState } from "react";
 import Authlayout from "../Layouts/AuthLayout";
-import { getClassGroups, getClassses, getOrders, getOrderStatuses, getSidebarMenus } from "../../data";
+import { getClassGroups } from "../../data";
 import { Card } from "../Elements/card";
 import { H2 } from "../Elements/heading";
-import { Link } from "react-router-dom";
 import { Pagination } from "../Fragments/Pagination";
 import { SidebarMenu } from "../Fragments/SidebarMenu";
 import { ClassCard } from "../Fragments/SegmentCard";
+import useOrder from "../../hooks/useOrder";
 
 const token = localStorage.getItem("token");
+const auth = localStorage.getItem("user");
 const ClassPage = () => {
 
-    const [activeTab, setActiveTab] = useState("all");
+    const [activeTab, setActiveTab] = useState("");
     const [classGroups, setClassGroups] = useState([]);
-    const [classes,setClasses] = useState([]);
+
+    let id_order = null;
+    let categoryParam = null;
+    let categoryColumn = null;
+    let user_id = auth;
+    if (activeTab !== "all") {
+        categoryParam = activeTab;
+        categoryColumn = "class_status";
+      }
+    const { orderData } = useOrder(id_order, categoryParam, categoryColumn, user_id);
 
     useEffect(() => {
         if(token === null) {
             window.location.href = "/login";
         }
         setClassGroups(getClassGroups());
-        setClasses(getClassses());
     }, []);
-
-    useEffect(() => {
-        setClasses(getClassses(activeTab));
-    }, [activeTab]);
  return (
     <Authlayout title="Home" navType="home" withFooter={true}>
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -54,10 +59,10 @@ const ClassPage = () => {
                             ))}
                             </div>
                         </div>
-                        {classes.length > 0 && classes.map((order) => (
+                        {orderData.length > 0 && orderData.map((order) => (
                             <ClassCard order={order} key={order.id} />
                         ))}
-                        {classes.length > 0 && (
+                        {orderData.length > 0 && (
                             <Pagination />
                         )}
                     </Card>

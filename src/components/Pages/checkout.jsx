@@ -55,9 +55,10 @@ const HandleCheckout = (e) => {
     const user_company = selectedClass.user_company;
     const user_position = selectedClass.user_position;
     const user_id = auth;
+    const class_status = "in_progress"
 
     createOrder({ order_id, no, class_id, paymentMethod, paid_at, status
-     , avatar, new_price, price, page_title, photo, rating, title, total_modul, total_time, user, user_company, user_position, user_id
+     , avatar, new_price, price, page_title, photo, rating, title, total_modul, total_time, user, user_company, user_position, user_id, class_status
      });
 };
 

@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Authlayout from "../Layouts/AuthLayout";
 import { getTabs } from "../../data";
 import CardItems from "../Fragments/CardItems";

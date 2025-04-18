@@ -265,7 +265,7 @@ const howToPay = {
 
 const classGroups = [
     {
-        key:"all",
+        key:"",
         name:"Semua Kelas"
     },    {
         key:"in_progress",

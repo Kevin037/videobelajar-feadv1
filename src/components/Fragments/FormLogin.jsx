@@ -10,7 +10,7 @@ const Formlogin = () => {
         const [email, setEmail]     = useState('');
         const [password, setPassword] = useState('');
         
-        const { user, loading, error, login } = useAuth();
+        const { user, loading, login } = useAuth();
       
         const HandleLogin = (e) => {
           e.preventDefault();
@@ -18,17 +18,10 @@ const Formlogin = () => {
         };
     
         useEffect(() => {
-            console.log(user);
-            
             if (user) {
                 window.location.href = "/login";   
             }
         },[user])
-    // const HandleLogin = (event) => {
-    //     event.preventDefault();
-    //     localStorage.setItem("token",getToken());
-    //     window.location.href = "/";
-    // };
 
     useEffect(() => {
         if(token !== null) {

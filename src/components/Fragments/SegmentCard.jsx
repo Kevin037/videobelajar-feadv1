@@ -1,5 +1,5 @@
 import { number_format } from "../../data";
-import { ButtonPrimaryMD, ButtonWhite, ButtonWhiteMD } from "../Elements/button";
+import { ButtonPrimaryMD, ButtonWhiteMD } from "../Elements/button";
 import { ClassStatusDisplay, StatusDisplay } from "../Elements/status_orders";
 
 export const SegmentCard = (props) => {
@@ -76,7 +76,7 @@ export const ClassCard = (props) => {
                     <div className={`text-align col-span-6 md:col-span-3`}>
                         Progres Kelas: <span className="font-bold">{order.percentage_progress}%</span>
                     </div>
-                    <div className={`flex items-center col-span-6 ${(order.status == "in_progress") ? "md:col-span-5" : "md:col-span-3"}`}>
+                    <div className={`flex items-center col-span-6 ${(order.class_status == "in_progress") ? "md:col-span-5" : "md:col-span-3"}`}>
                         {(order.class_status == "in_progress") && (
                             <img src="../assets/progress_bar_completed.svg" className="justify-center w-full" alt="" />
                         )}
@@ -132,7 +132,7 @@ export const OrderCard = (props) => {
                         </div>
                         <div className="col-span-12 md:col-span-2 ... text-left md:text-right">
                             <p className="text-sm mt-3 md:mt-0">Harga</p>
-                            <p className="font-medium">Rp {number_format(order.price)}</p>
+                            <p className="font-medium">Rp {number_format(order.new_price)}</p>
                         </div>
                     </>
                 }
@@ -142,7 +142,7 @@ export const OrderCard = (props) => {
                             Total Pembayaran
                         </div>
                         <div className="col-span-5 ... text-right">
-                            <p className="price">Rp {number_format(order.price)}</p>
+                            <p className="price">Rp {number_format(order.new_price)}</p>
                         </div> 
                     </>
                 }

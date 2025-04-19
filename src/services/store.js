@@ -1,9 +1,9 @@
 // import classReducer from '@/redux/reducers/classSlice';
-import classReducer from './reducers/classSlice';
-import userReducer from './reducers/userSlice';
-import authReducer from './reducers/authSlice';
-import tutorReducer from './reducers/tutorSlice';
-import orderReducer from './reducers/orderSlice';
+import classReducer from './api/classSlice';
+import userReducer from './api/userSlice';
+import authReducer from './api/authSlice';
+import tutorReducer from './api/tutorSlice';
+import orderReducer from './api/orderSlice';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 const reducers = combineReducers({

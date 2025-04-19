@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { retrieveData } from '../../utils/db/service';
+import { retrieveData } from "../db";
 
 const initialState = {
   selectedClass:null,

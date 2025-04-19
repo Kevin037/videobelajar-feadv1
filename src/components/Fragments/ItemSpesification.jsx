@@ -18,8 +18,16 @@ export const ItemSpesification = (props) => {
             <H1>{data?.page_title}</H1><br />
             <div className="grid grid-cols-12 ...">
                 <div className="col-span-3 ..."><b><h5 className="price">Rp {formatNumberToK(data?.new_price)}</h5></b></div>
-                <div className="col-span-5 ..."><p className="line-through text-black-400 text-md">Rp {formatNumberToK(data?.price)}</p></div>
-                <div className="col-span-4 ..."><p className="bg-yellow-400 rounded-lg text-gray-100 text-md px-2 py-1">Diskon 50%</p></div>
+                <div className="col-span-5 ...">
+                    {data?.price > data?.new_price && (
+                        <p className="line-through text-black-400 text-md">Rp {formatNumberToK(data?.price)}</p>
+                    )}
+                </div>
+                <div className="col-span-4 ...">
+                    {data?.discount > 0 && (
+                        <p className="bg-yellow-400 rounded-lg text-gray-100 text-md px-2 py-1">Diskon {data?.discount}%</p>
+                    )}
+                </div>
             </div>
             {!isDetail && 
             <>

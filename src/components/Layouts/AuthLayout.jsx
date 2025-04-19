@@ -13,6 +13,7 @@ const Authlayout = (props) => {
     const handleLogout = () => {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+      localStorage.removeItem("user_photo");
       window.location.href = "/login";
     }
     
@@ -123,11 +124,19 @@ const Authlayout = (props) => {
               >
                 Sign Out
               </DisclosureButton>
-              <img
-                      alt=""
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                      className="size-8 rounded-full mx-4"
-                    />
+              {user_photo != null ? (
+                      <img
+                        alt=""
+                        src={user_photo}
+                        className="size-8 rounded-full mx-4"
+                      />
+                      ) : (
+                      <img
+                        alt=""
+                        src="https://github.com/shadcn.png"
+                        className="size-8 rounded-full mx-4"
+                      />
+                      )}
           </div>
         </DisclosurePanel>
       </Disclosure>

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTutors } from '../redux/reducers/tutorSlice';
+import { getTutors } from '../services/api/tutorSlice';
 
 const useTutor = (class_id=null) => {
   const dispatch = useDispatch();

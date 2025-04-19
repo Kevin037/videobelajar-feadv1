@@ -1,6 +1,6 @@
 // hooks/useUser.js
 import { useDispatch, useSelector } from 'react-redux';
-import { createOrderThunk, getOrderById, getOrders, updateOrderThunk } from '../redux/reducers/orderSlice';
+import { createOrderThunk, getOrderById, getOrders, updateOrderThunk } from '../services/api/orderSlice';
 import { useEffect } from 'react';
 
 const useOrder = (id=null,order_id=null, columnName=null, user_id = null) => {

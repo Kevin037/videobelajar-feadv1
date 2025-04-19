@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { classFilterData, getDataById, parseFirestoreFields, retrieveData } from '../../utils/db/service';
+import { classFilterData, getDataById, parseFirestoreFields, retrieveData } from "../db";
 
 const initialState = {
   selectedClass:null,

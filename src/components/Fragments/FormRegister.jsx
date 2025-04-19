@@ -1,4 +1,4 @@
-import { ButtonPrimary, ButtonPrimarySubmit, ButtonSecondary, ButtonSpan } from "../Elements/button";
+import { ButtonPrimarySubmit, ButtonSecondary, ButtonSpan } from "../Elements/button";
 import InputForm from "../Elements";
 import PhoneInputForm from "../Elements/phone_input";
 import { Card } from "../Elements/card";
@@ -10,13 +10,25 @@ const FormRegister = () => {
     const [name, setName]       = useState('');
     const [email, setEmail]     = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [no_hp, setNoHp] = useState('');
     
     const { currentUser, loading, error, register } = useUser();
   
     const handleSubmit = (e) => {
+        let process = true;
+        if (name === '' || email === '' || password === '' || confirmPassword === '' || no_hp === '') {
+            alert('Semua field harus diisi');
+            process = false;
+        }
+        if(password !== confirmPassword) {
+            alert('Password dan konfirmasi password harus sama');
+            process = false;
+        }
       e.preventDefault();
-      register({ name, email, password, no_hp });
+      if (process) {
+        register({ name, email, password, no_hp });
+      }
     };
 
     useEffect(() => {
@@ -36,7 +48,7 @@ const FormRegister = () => {
                 <InputForm label="Email" type="text" placeholder="email@gmail.com" name="email" onChange={e => setEmail(e.target.value)} />
                 <PhoneInputForm label="No. Hp *" type="number" name="phone" onChange={e => setNoHp(e.target.value)} />
                 <InputForm label="Kata Sandi *" type="password" placeholder="***" name="password" onChange={e => setPassword(e.target.value)} />
-                <InputForm label="Konfirmasi Kata Sandi *" type="password" placeholder="***" name="password" />
+                <InputForm label="Konfirmasi Kata Sandi *" type="password" placeholder="***" name="password" onChange={e => setConfirmPassword(e.target.value)} />
                 <div className="mb-4 text-right">
                     <a className="text-sm">Lupa Password ?</a>
                 </div>

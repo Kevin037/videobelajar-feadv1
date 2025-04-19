@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Authlayout from "../Layouts/AuthLayout";
-import { getCourseSections, getItem } from "../../data";
+import { getCourseSections } from "../../data";
 import CardItems from "../Fragments/CardItems";
 import { BannerContent } from "../Fragments/Content";
 import { Card } from "../Elements/card";
@@ -14,7 +14,6 @@ import useTutor from "../../hooks/useTutor";
 const token = localStorage.getItem("token");
 const ProductPage = () => {
     const {id} = useParams();
-    const [items,setItems] = useState([]);
     const [courseSections,setCourseSections] = useState([]);
     const { selectedClass } = useClass("",id);
     const { limitedClass } = useClass("",id,3);
@@ -24,7 +23,6 @@ useEffect(() => {
     if(token === null) {
         window.location.href = "/login";
     }
-    setItems(getItem("all"));
     setCourseSections(getCourseSections());
 }, []);
 

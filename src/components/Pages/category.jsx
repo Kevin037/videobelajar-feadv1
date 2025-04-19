@@ -1,21 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import Authlayout from "../Layouts/AuthLayout";
-import { getDurationFilters, getOrderingFilters, getOrderStatuses, getPriceFilters, getTabs } from "../../data";
+import { getDurationFilters, getOrderingFilters, getPriceFilters, getTabs } from "../../data";
 import { Card } from "../Elements/card";
 import { H1 } from "../Elements/heading";
 import { Pagination } from "../Fragments/Pagination";
-import useOrder from "../../hooks/useOrder";
 import useClass from "../../hooks/useClass";
 import CardItems from "../Fragments/CardItems";
 import { FilterSection } from "../Fragments/FilterSection";
-import { Input, InputIcon, Select } from "../Elements/input";
+import { InputIcon, Select } from "../Elements/input";
 
 const token = localStorage.getItem("token");
-const auth = localStorage.getItem("user");
 const CategoryPage = () => {
-
-    const [activeTab, setActiveTab] = useState("all");
-    const [orderStatus, setOrderStatus] = useState([]);
 
     // Filter
     const [classType, setClassType] = useState(null);
@@ -31,21 +26,11 @@ const CategoryPage = () => {
     const [priceFilters, setPriceFilters ] = useState([]);
     const [orderingFilters, setorderingFilters] = useState(null);
     const keywordRef = useRef(null);
-    let id_order = null;
-    let categoryParam = null;
-    let categoryColumn = null;
-    let user_id = auth;
-    if (activeTab !== "all") {
-        categoryParam = activeTab;
-        categoryColumn = "status";
-      }
-    const { orderData } = useOrder(id_order, categoryParam, categoryColumn, user_id);
 
     useEffect(() => {
         if(token === null) {
             window.location.href = "/login";
         }
-        setOrderStatus(getOrderStatuses());
         setClassTypes(getTabs());
         setDurationFilters(getDurationFilters());
         setPriceFilters(getPriceFilters());
@@ -121,7 +106,7 @@ const CategoryPage = () => {
                             />
                         ))}
                     </div>
-                    {orderData.length > 0 && (
+                    {classData.length > 0 && (
                         <Pagination />
                     )}
                 </div>

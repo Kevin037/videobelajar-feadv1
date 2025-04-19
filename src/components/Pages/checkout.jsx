@@ -19,7 +19,7 @@ const CheckoutPage = () => {
     const [openGroup, setOpenGroup] = useState("Transfer Bank");
     const [paymentMethod, setpaymentMethod] = useState("");
     const { selectedClass } = useClass("",id);
-    const [class_id, setClass_id] = useState(id);
+    const [class_id] = useState(id);
 
     const { currentOrder, createOrder } = useOrder();
 

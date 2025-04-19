@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getDataById, parseFirestoreFields, store, update } from '../../utils/db/service';
+import { getDataById, parseFirestoreFields, store, update } from '../db';
 
 const initialState = {
   currentUser: null,

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginUser } from "../../utils/db/service";
+import { loginUser } from "../db";
 
 export const loginUserThunk = createAsyncThunk(
   "user/login",
@@ -8,7 +8,9 @@ export const loginUserThunk = createAsyncThunk(
       const user = await loginUser(credentials);
       const token = btoa(JSON.stringify({ email: user.email, time: new Date() }));
       localStorage.setItem("user", user.id);
-      localStorage.setItem("user_photo", user.photo);
+      if (user.photo != null) {
+        localStorage.setItem("user_photo", user.photo); 
+      }
       localStorage.setItem("token", token);
       return token;
     } catch (error) {

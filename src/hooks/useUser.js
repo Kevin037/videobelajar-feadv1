@@ -1,6 +1,6 @@
 // hooks/useUser.js
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserById, registerUserThunk, resetUser, updateUserThunk } from '../redux/reducers/userSlice';
+import { getUserById, registerUserThunk, resetUser, updateUserThunk } from '../services/api/userSlice';
 import { useEffect } from 'react';
 
 const useUser = (id=null) => {

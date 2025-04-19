@@ -1,23 +1,4 @@
-// import {collection, getDocs, getFirestore, query, where} from "firebase/firestore";
-// import app from "./init";
-import api from "../api";
-
-// const firestore = getFirestore(app);
-
-// export async function retrieveData(collectionName, filterGroup = null) {
-//     let q;
-//     if (filterGroup != null) {
-//         q = query(collection(firestore, collectionName), where("group", "==", filterGroup));
-//     } else {
-//         q = collection(firestore, collectionName);
-//     }
-//     const snapshot = await getDocs(q);
-//     const data = snapshot.docs.map((doc) => ({
-//         id: doc.id,
-//         ...doc.data(),
-//     }));
-//     return data;
-// }
+import api from "./api";
 
 const PROJECT_ID = import.meta.env.VITE_FIREBASE_PROJECT_ID; // ganti sesuai project kamu
 
@@ -62,6 +43,12 @@ export async function retrieveData(collectionName, filterGroup = null, columnNam
     } else {
       return formatted.filter(
         item => item[columnName] === filterGroup
+      ); 
+    }
+  } else {
+    if (user) {
+      return formatted.filter(
+        item => item.user_id === user
       ); 
     }
   }

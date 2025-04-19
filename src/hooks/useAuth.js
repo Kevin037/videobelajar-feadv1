@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUserThunk } from '../redux/reducers/authSlice';
+import { loginUserThunk } from '../services/api/authSlice';
 
 const useAuth = () => {
   const dispatch = useDispatch();

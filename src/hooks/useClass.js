@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchClassById, getClasses, getClassesFilter } from '../redux/reducers/classSlice';
+import { fetchClassById, getClasses, getClassesFilter } from '../services/api/classSlice';
 
 const useClass = (type=null,id=null,limit=0,ClassType = null, price = null, duration = null, keyword = null, ordering = null) => {
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ const useClass = (type=null,id=null,limit=0,ClassType = null, price = null, dura
     if (id) {
       dispatch(fetchClassById(id)); 
     }
-  }, [dispatch,type, ClassType, price, duration, keyword, ordering]);
+  }, [dispatch,type, ClassType, price, duration, keyword, ordering,id]);
 
   return { classData, loading, error, selectedClass, limitedClass};
 };

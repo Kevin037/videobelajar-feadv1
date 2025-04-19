@@ -13,7 +13,7 @@ import SuccessPaymentPage from './components/Pages/success_payment.jsx'
 import OrderPage from './components/Pages/orders.jsx'
 import ProfilePage from './components/Pages/profile.jsx'
 import ClassPage from './components/Pages/classes.jsx'
-import { store } from './redux/store.js'
+import { store } from './services/store.js'
 import { Provider } from 'react-redux';
 import CategoryPage from './components/Pages/category.jsx'
 

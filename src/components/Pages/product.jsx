@@ -143,16 +143,7 @@ const strLimit = (str, limit) => {
                 {limitedClass.length > 0 && limitedClass.slice(0, 3).map((item) => (
                     <CardItems 
                         key={item.id} 
-                        id={item.id} 
-                        photo={item.photo} 
-                        title={item.title} 
-                        desc={item.desc} 
-                        avatar={item.avatar} 
-                        user={item.user} 
-                        user_position={item.user_position} 
-                        user_company={item.user_company}
-                        price={item.new_price}
-                        total_selling={item.total_selling}
+                        data={item}
                     />
                 ))}
             </div>

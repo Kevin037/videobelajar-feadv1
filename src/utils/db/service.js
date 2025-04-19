@@ -19,7 +19,7 @@ import api from "../api";
 //     return data;
 // }
 
-const PROJECT_ID = 'videobelajar-react'; // ganti sesuai project kamu
+const PROJECT_ID = import.meta.env.VITE_FIREBASE_PROJECT_ID; // ganti sesuai project kamu
 
 export const parseFirestoreFields = (data) => {
   const parsed = {};
@@ -153,7 +153,11 @@ function buildFirestoreFields(data) {
     const fields = {};
     Object.entries(data).forEach(([key, value]) => {
       if (typeof value === "number") {
-        fields[key] = { integerValue: value };
+        if (Number.isInteger(value)) {
+          fields[key] = { integerValue: value };
+        } else {
+          fields[key] = { doubleValue: value };
+        }
       } else if (typeof value === "string") {
         const isISODate = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.*Z$/.test(value);
         fields[key] = isISODate

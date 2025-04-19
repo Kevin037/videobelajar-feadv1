@@ -1,13 +1,14 @@
 'use client';
 import axios from 'axios';
 
+const baseUrl = import.meta.env.VITE_FIREBASE_DB_BASEURL
 // Create an Axios instance with default headers
 const api = axios.create({
   // headers: {
   //   'Content-Type': 'application/json',
   //   Accept: 'application/json',
   // },
-  baseURL: 'https://firestore.googleapis.com/v1',
+  baseURL: baseUrl,
   // timeout: 10000,
   // mode: 'cors',
 });

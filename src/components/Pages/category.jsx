@@ -117,17 +117,7 @@ const CategoryPage = () => {
                         {classData.length > 0 && classData.map((item) => (
                             <CardItems 
                                 key={item.id} 
-                                id={item.id} 
-                                photo={item.photo} 
-                                title={item.title} 
-                                desc={item.desc} 
-                                avatar={item.avatar} 
-                                user={item.user} 
-                                user_position={item.user_position} 
-                                user_company={item.user_company}
-                                rating={item.rating}
-                                price={item.new_price}
-                                total_selling={item.total_selling}
+                                data={item} 
                             />
                         ))}
                     </div>

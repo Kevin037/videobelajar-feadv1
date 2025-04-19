@@ -3,7 +3,7 @@ import { Card } from "../Elements/card"
 import { formatNumberToK } from "../../data"
 
 const CardItems = (props) => {
-    const {id,photo,title,desc,avatar,user,user_position,user_company,rating,price} = props
+    const {id,photo,title,desc,avatar,user,user_position,user_company,rating,price,total_selling} = props
     return (
         <Link to={`/product/${id}`}>
         <Card key={id} varian="mx-2 max-w-sm">
@@ -29,7 +29,7 @@ const CardItems = (props) => {
             <div className="col-span-3 ...">
             <div className="grid grid-cols-1 grid-cols-2 ...">
                 <div className="col-span-1"><img src="../assets/rating.svg"/></div>
-                <div className="col-span-1">{rating}</div>
+                <div className="col-span-1">{rating} ({total_selling})</div>
             </div>
             </div>
             <div className="col-span-1 ...">

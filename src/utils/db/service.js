@@ -69,6 +69,80 @@ export async function retrieveData(collectionName, filterGroup = null, columnNam
   return formatted;
 }
 
+export async function classFilterData(ClassType = null, price = null, duration = null, keyword = null, ordering = null) {
+  const endpoint = `/projects/${PROJECT_ID}/databases/(default)/documents/classes`;
+
+  const response = await api.get(endpoint);
+
+  const documents = response.data.documents || [];
+
+  const formatted = documents.map((doc) => {
+    const id = doc.name.split('/').pop();
+    const fields = Object.entries(doc.fields || {}).reduce((acc, [key, val]) => {
+      const value = Object.values(val)[0]; // ambil isi stringValue/numberValue/dll
+      acc[key] = value;
+      return acc;
+    }, {});
+    return {
+      id,
+      ...fields
+    };
+  });
+
+  const filtered = formatted.filter((item) => {
+    const matchClassType = ClassType ? item.group === ClassType : true;
+    let matchPrice = true;
+    let matchDuration = true;
+    if (price) {
+      if (price === "0") {
+        matchPrice = item.new_price < 100000;
+      }
+      if (price === "1") {
+         matchPrice = item.new_price >= 100000 && item.new_price <= 300000;
+      }
+      if (price === "2") {
+         matchPrice = item.new_price > 300000;
+      }
+    }
+    if (duration) {
+      if (duration === "0") {
+        matchDuration = item.total_time < 240;
+      }
+      if (duration === "1") {
+        matchDuration = item.total_time >= 240 && item.total_time <= 480;
+      }
+      if (duration === "2") {
+        matchDuration = item.total_time > 480;
+      }
+    }
+    const matchKeyword = keyword ? item.title.toLowerCase().includes(keyword.toLowerCase()) : true;
+    return matchClassType && matchPrice && matchDuration && matchKeyword;
+  });
+
+  if (ordering) {
+    if (ordering === "0") {
+      filtered.sort((a, b) => a.new_price - b.new_price);
+    }
+    if (ordering === "1") {
+      filtered.sort((a, b) => b.new_price - a.new_price);
+    }
+    if (ordering === "2") {
+      filtered.sort((a, b) => a.title.localeCompare(b.title));
+    }
+    if (ordering === "3") {
+      filtered.sort((a, b) => b.title.localeCompare(a.title));
+    }
+    if (ordering === "4") {
+      filtered.sort((a, b) => b.rating - a.rating);
+    }
+    if (ordering === "5") {
+      filtered.sort((a, b) => a.rating - b.rating);
+    }
+  }
+  
+  return filtered;
+}
+
 export async function getDataById(id,collectionName) {
   const endpoint = `/projects/${PROJECT_ID}/databases/(default)/documents/${collectionName}/${id}`;
   const response = await api.get(endpoint);

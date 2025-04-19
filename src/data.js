@@ -102,7 +102,7 @@ const items = [
 
 const tabs = [
     {
-        key:"all",
+        key:"",
         name:"Semua Kelas"
     },
     {
@@ -327,6 +327,87 @@ const myClasses = [
         percentage_progress:100
     }
 ];
+
+const price_filters = [
+    {
+        key:"0",
+        name:"Di Bawah Rp100.000"
+    },
+    {
+        key:"1",
+        name:"Rp100.000 - Rp300.000"
+    },
+    {
+        key:"2",
+        name:"Diatas Rp300.000"
+    }
+];
+
+const duration_filters = [
+    {
+        key:"0",
+        name:"Kurang dari 4 Jam"
+    },
+    {
+        key:"1",
+        name:"4 - 8 Jam"
+    },
+    {
+        key:"2",
+        name:"Lebih dari 8 Jam"
+    }
+];
+
+const ordering_filters = [
+    {
+        key:"0",
+        column:"price",
+        type:"asc",
+        name:"Harga Rendah"
+    },
+    {
+        key:"1",
+        column:"price",
+        type:"desc",
+        name:"Harga Tinggi"
+    },
+    {
+        key:"2",
+        column:"name",
+        type:"asc",
+        name:"A to Z"
+    },
+    {
+        key:"3",
+        column:"name",
+        type:"desc",
+        name:"X to A"
+    },
+    {
+        key:"4",
+        column:"rating",
+        type:"asc",
+        name:"Rating Tertinggi"
+    },
+    {
+        key:"5",
+        column:"rating",
+        type:"desc",
+        name:"Rating Terendah"
+    }
+];
+
+export const getDurationFilters = () => {
+    return duration_filters;
+}
+
+export const getPriceFilters = () => {
+    return price_filters;
+}
+
+export const getOrderingFilters = () => {
+    return ordering_filters;
+}
 
 export const getItem = (params) => {
     if(params !== "all"){

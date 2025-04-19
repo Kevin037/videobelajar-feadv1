@@ -10,9 +10,9 @@ import useClass from "../../hooks/useClass";
 const token = localStorage.getItem("token");
 const HomePage = () => {
 
-const [activeTab, setActiveTab] = useState("all");
+const [activeTab, setActiveTab] = useState("");
 const [tabs, setTabs] = useState([]);
-const { classData } = useClass(activeTab === "all" ? null : activeTab);
+const { classData } = useClass(activeTab === "" ? null : activeTab);
 
 useEffect(() => {
     if(token === null) {
@@ -68,6 +68,7 @@ useEffect(() => {
                         user_company={item.user_company}
                         rating={item.rating}
                         price={item.new_price}
+                        total_selling={item.total_selling}
                     />
                 ))}
             </div>

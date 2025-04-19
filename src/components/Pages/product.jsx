@@ -152,6 +152,7 @@ const strLimit = (str, limit) => {
                         user_position={item.user_position} 
                         user_company={item.user_company}
                         price={item.new_price}
+                        total_selling={item.total_selling}
                     />
                 ))}
             </div>

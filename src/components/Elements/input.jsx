@@ -1,19 +1,37 @@
 import { forwardRef } from "react"
 
 export const Input = forwardRef((props,ref) => {
-    const {name,type,placeholder,varian,onChange} = props
+    const {name,type,placeholder,varian,onChange, responsive=false, value} = props
     return (
         <input 
             type={type}
-            className={`text-sm border rounded-theme w-full py-2 px-3 ${varian}`} 
+            className={`text-sm border rounded-theme py-2 px-3 ${varian} ${responsive ? `w-full md:w-auto` : `w-full`}`} 
             name={name}
             id={name}
             placeholder={placeholder}
             ref={ref}
             onChange={onChange}
+            value={value}
         />
     )
 });
+
+export const InputIcon = forwardRef((props,ref) => {
+    const {name,type,placeholder, varian,icon, responsive=false, onClick, onChange, value} = props
+    return (
+      <div className="relative">
+        <Input name={name} onChange={onChange} value={value} type={type} ref={ref} placeholder={placeholder} varian={varian} responsive={responsive}></Input>
+        <span className="absolute right-4 top-6 md:top-2 cursor-pointer text-gray-500" 
+        >
+            <img
+                src={`../assets/${icon}`}
+                className="h-5 w-auto"
+                onClick={onClick}
+            />
+        </span>
+    </div>
+    )
+})
 
 export const InputButton = forwardRef((props,ref) => {
     const {name,type,placeholder, varian,buttonLabel} = props
@@ -49,9 +67,9 @@ export const FloatingInput = ({ label, value, onChange, name, className = '', ty
   };
 
   export const Select = (props) => {
-    const {children, className} = props
+    const {children, className,responsive=false, onChange} = props
     return (
-        <select className={`text-sm border rounded-theme w-full py-2 px-3 ${className}`}>
+        <select className={`text-sm border rounded-theme ${responsive ? `w-full md:w-auto` : `w-full`} py-2 px-3 ${className}`} onChange={onChange}>
             {children}
         </select>
     )

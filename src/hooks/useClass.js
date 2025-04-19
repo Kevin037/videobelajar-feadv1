@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchClassById, getClasses } from '../redux/reducers/classSlice';
+import { fetchClassById, getClasses, getClassesFilter } from '../redux/reducers/classSlice';
 
-const useClass = (type=null,id=null,limit=0,enabled = true) => {
+const useClass = (type=null,id=null,limit=0,ClassType = null, price = null, duration = null, keyword = null, ordering = null) => {
   const dispatch = useDispatch();
   const {classData, selectedClass} = useSelector((state) => state.class);
   const limitedClass = classData.slice(0,limit);
@@ -10,13 +10,16 @@ const useClass = (type=null,id=null,limit=0,enabled = true) => {
   const error = useSelector(state => state.class.error);
 
   useEffect(() => {
-    if (!enabled) return;
-    const columnName = type ? 'group' : null;
-    dispatch(getClasses({type,columnName}));
+    if (ClassType || price || duration || keyword || ordering) {
+      dispatch(getClassesFilter({ClassType, price, duration, keyword, ordering}));
+    } else {
+      const columnName = type ? 'group' : null;
+      dispatch(getClasses({type,columnName}));
+    }
     if (id) {
       dispatch(fetchClassById(id)); 
     }
-  }, [dispatch,type]);
+  }, [dispatch,type, ClassType, price, duration, keyword, ordering]);
 
   return { classData, loading, error, selectedClass, limitedClass};
 };

@@ -15,6 +15,7 @@ import ProfilePage from './components/Pages/profile.jsx'
 import ClassPage from './components/Pages/classes.jsx'
 import { store } from './redux/store.js'
 import { Provider } from 'react-redux';
+import CategoryPage from './components/Pages/category.jsx'
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
   {
     path: '/classes',
     element: <ClassPage/>
+  },
+  {
+    path: '/category',
+    element: <CategoryPage/>
   }
 ])
 

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getDataById, parseFirestoreFields, retrieveData } from '../../utils/db/service';
+import { classFilterData, getDataById, parseFirestoreFields, retrieveData } from '../../utils/db/service';
 
 const initialState = {
   selectedClass:null,
@@ -35,6 +35,18 @@ export const fetchClassById = createAsyncThunk(
     try {
       const res = await getDataById(id, 'classes');
       return res;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getClassesFilter = createAsyncThunk(
+  'class/filter',
+  async ({ClassType, price, duration, keyword, ordering}, thunkAPI) => {
+    try {
+      const data = await classFilterData(ClassType, price, duration, keyword, ordering);
+      return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -79,6 +91,17 @@ const classSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+      .addCase(getClassesFilter.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getClassesFilter.fulfilled, (state, action) => {
+        state.loading = false;
+        state.classData = action.payload;
+      })
+      .addCase(getClassesFilter.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 

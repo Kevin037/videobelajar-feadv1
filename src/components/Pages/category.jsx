@@ -1,0 +1,144 @@
+import { useEffect, useRef, useState } from "react";
+import Authlayout from "../Layouts/AuthLayout";
+import { getDurationFilters, getOrderingFilters, getOrderStatuses, getPriceFilters, getTabs } from "../../data";
+import { Card } from "../Elements/card";
+import { H1 } from "../Elements/heading";
+import { Pagination } from "../Fragments/Pagination";
+import useOrder from "../../hooks/useOrder";
+import useClass from "../../hooks/useClass";
+import CardItems from "../Fragments/CardItems";
+import { FilterSection } from "../Fragments/FilterSection";
+import { Input, InputIcon, Select } from "../Elements/input";
+
+const token = localStorage.getItem("token");
+const auth = localStorage.getItem("user");
+const CategoryPage = () => {
+
+    const [activeTab, setActiveTab] = useState("all");
+    const [orderStatus, setOrderStatus] = useState([]);
+
+    // Filter
+    const [classType, setClassType] = useState(null);
+    const [priceFilter, setPriceFilter] = useState(null);
+    const [durationFilter, setDurationFilter] = useState(null);
+    const [keyword, setKeyword] = useState("");
+    const [ordering, setOrdering] = useState(null);
+    const { classData } = useClass(null,null,0,classType, priceFilter, durationFilter, keyword, ordering);
+    // Filter
+
+    const [classTypes, setClassTypes] = useState([]);
+    const [durationFilters, setDurationFilters] = useState([]);
+    const [priceFilters, setPriceFilters ] = useState([]);
+    const [orderingFilters, setorderingFilters] = useState(null);
+    const keywordRef = useRef(null);
+    let id_order = null;
+    let categoryParam = null;
+    let categoryColumn = null;
+    let user_id = auth;
+    if (activeTab !== "all") {
+        categoryParam = activeTab;
+        categoryColumn = "status";
+      }
+    const { orderData } = useOrder(id_order, categoryParam, categoryColumn, user_id);
+
+    useEffect(() => {
+        if(token === null) {
+            window.location.href = "/login";
+        }
+        setOrderStatus(getOrderStatuses());
+        setClassTypes(getTabs());
+        setDurationFilters(getDurationFilters());
+        setPriceFilters(getPriceFilters());
+        setorderingFilters(getOrderingFilters());
+    }, []);
+
+    const resetFilter = () => {
+        window.location.reload();
+    }
+ return (
+    <Authlayout title="Home" navType="home" withFooter={true}>
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+            <H1>Koleksi Video Pembelajaran Unggulan</H1>
+            <div className="grid grid-cols-1 md:grid-cols-12 ...">
+                <div className="col-span-4 ...">
+                    <p className="text-sm text-gray-400">Jelajahi Dunia Pengetahuan Melalui Pilihan Kami!</p>
+                    <Card varian="md:mr-4">
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-lg font-bold text-gray-800">Filter</h2>
+                            <button className="text-sm text-red-500 cursor-pointer" onClick={resetFilter}>Reset</button>
+                        </div>
+                        <FilterSection
+                            title={<span className="flex items-center gap-2">
+                                    <img src="../assets/bidang_filter.svg" alt="" /> Bidang Studi
+                                    </span>}
+                            name="ClassType"
+                            options={classTypes}
+                            onChange={e => setClassType(e.target.value)}
+                        />
+                        <FilterSection
+                            title={<span className="flex items-center gap-2">
+                                <img src="../assets/price_filter.svg" alt="" /> Harga
+                                </span>}
+                            name="price"
+                            options={priceFilters}
+                            onChange={e => setPriceFilter(e.target.value)}
+                        />
+                        <FilterSection
+                            title={<span className="flex items-center gap-2">
+                                <img src="../assets/duration_filter.svg" alt="" /> Durasi
+                                </span>}
+                            name="duration"
+                            options={durationFilters}
+                            onChange={e => setDurationFilter(e.target.value)}
+                        />
+                    </Card>
+                </div>
+                <div className="col-span-8 ... mx-2 sm:mx-0">
+                    <div className="flex mb-4 justify-end">
+                        <Select className="bg-white mr-2 border-gray-200 md:mt-0 mt-4" onChange={e => setOrdering(e.target.value)} responsive={true}>
+                            <option value="" disabled selected>Urutkan</option>
+                            {orderingFilters?.length > 0 && orderingFilters.map((ordering) => (
+                                <option value={ordering.key} key={ordering.key}>{ordering.name}</option>
+                            ))}
+                        </Select>
+                        <InputIcon 
+                        name="search" 
+                        type="text" 
+                        placeholder="Cari Kelas" 
+                        varian="bg-white mr-2 border-gray-200 md:mt-0 mt-4 " 
+                        icon="search.svg" 
+                        responsive={true}
+                        onChange={(e) => setKeyword(e.target.value)}
+                        value={keyword}
+                        ref={keywordRef}>
+                        </InputIcon>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 ...">
+                        {classData.length > 0 && classData.map((item) => (
+                            <CardItems 
+                                key={item.id} 
+                                id={item.id} 
+                                photo={item.photo} 
+                                title={item.title} 
+                                desc={item.desc} 
+                                avatar={item.avatar} 
+                                user={item.user} 
+                                user_position={item.user_position} 
+                                user_company={item.user_company}
+                                rating={item.rating}
+                                price={item.new_price}
+                                total_selling={item.total_selling}
+                            />
+                        ))}
+                    </div>
+                    {orderData.length > 0 && (
+                        <Pagination />
+                    )}
+                </div>
+            </div>
+        </div>
+    </Authlayout>
+ );
+}
+
+export default CategoryPage
